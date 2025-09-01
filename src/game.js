@@ -253,6 +253,9 @@ function createTileElement(tile, index) {
         tileElement.addEventListener('touchstart', handleTouchStart);
         tileElement.addEventListener('touchmove', handleTouchMove);
         tileElement.addEventListener('touchend', handleTouchEnd);
+        
+        // Eventos de clic como fallback para móviles
+        tileElement.addEventListener('click', (e) => handleTileClick(e, index));
     }
     
     return tileElement;
@@ -297,6 +300,8 @@ function handleTouchStart(e) {
     touchStartTime = Date.now();
     currentTouchTile = e.target;
     
+    console.log('Touch start en ficha:', currentTouchTile.dataset.index, 'en posición:', touchStartX, touchStartY);
+    
     // Calcular offset desde el centro de la ficha
     const rect = currentTouchTile.getBoundingClientRect();
     touchOffsetX = touch.clientX - rect.left;
@@ -317,6 +322,7 @@ function handleTouchMove(e) {
     // Solo mover si el desplazamiento es significativo
     if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
         currentTouchTile.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+        console.log('Touch move:', deltaX, deltaY);
     }
 }
 
@@ -339,26 +345,136 @@ function handleTouchEnd(e) {
         return;
     }
     
-    // Encontrar el elemento bajo el toque
-    const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
-    const targetCell = elementBelow?.closest('.cell');
-    const targetRack = elementBelow?.closest('.rack');
+    // Buscar el elemento objetivo usando las coordenadas del toque
+    let targetElement = null;
     
-    if (targetCell || targetRack) {
+    // Primero intentar con elementFromPoint
+    try {
+        const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+        if (elementBelow) {
+            targetElement = elementBelow.closest('.cell') || elementBelow.closest('.rack');
+        }
+    } catch (error) {
+        console.log('elementFromPoint falló, usando método alternativo');
+    }
+    
+    // Si elementFromPoint falló, usar búsqueda manual
+    if (!targetElement) {
+        const touchX = touch.clientX;
+        const touchY = touch.clientY;
+        
+        // Buscar celdas del tablero
+        const cells = document.querySelectorAll('.cell');
+        for (let cell of cells) {
+            const rect = cell.getBoundingClientRect();
+            if (touchX >= rect.left && touchX <= rect.right && 
+                touchY >= rect.top && touchY <= rect.bottom) {
+                targetElement = cell;
+                break;
+            }
+        }
+        
+        // Si no se encontró celda, buscar rack
+        if (!targetElement) {
+            const rack = document.querySelector('.rack');
+            if (rack) {
+                const rect = rack.getBoundingClientRect();
+                if (touchX >= rect.left && touchX <= rect.right && 
+                    touchY >= rect.top && touchY <= rect.bottom) {
+                    targetElement = rack;
+                }
+            }
+        }
+    }
+    
+    if (targetElement) {
         // Simular un drop
         const tileIndex = currentTouchTile.dataset.index;
         const fakeEvent = {
-            target: targetCell || targetRack,
+            target: targetElement,
             preventDefault: () => {},
             dataTransfer: {
                 getData: () => tileIndex
             }
         };
         
+        console.log('Drop simulado:', tileIndex, 'en', targetElement.className);
         handleDrop(fakeEvent);
+    } else {
+        console.log('No se encontró objetivo para el drop');
     }
     
     currentTouchTile = null;
+}
+
+// Función de fallback para clics en móviles
+function handleTileClick(e, tileIndex) {
+    // Solo procesar si no estamos en modo intercambio y es un dispositivo móvil
+    if (gameState.exchangeMode || !('ontouchstart' in window)) {
+        return;
+    }
+    
+    console.log('Clic en ficha móvil:', tileIndex);
+    
+    // Crear un indicador visual de selección
+    const tile = e.target;
+    tile.classList.add('selected');
+    
+    // Mostrar mensaje de ayuda
+    showMessage('Toca una celda del tablero para colocar la ficha', 'success');
+    
+    // Agregar listener temporal para el siguiente clic en el tablero
+    const handleBoardClick = (boardEvent) => {
+        const targetCell = boardEvent.target.closest('.cell');
+        if (targetCell) {
+            // Simular drop
+            const fakeEvent = {
+                target: targetCell,
+                preventDefault: () => {},
+                dataTransfer: {
+                    getData: () => tileIndex
+                }
+            };
+            
+            console.log('Drop simulado por clic:', tileIndex, 'en celda');
+            handleDrop(fakeEvent);
+            
+            // Limpiar
+            tile.classList.remove('selected');
+            document.removeEventListener('click', handleBoardClick);
+            return;
+        }
+        
+        // Si se hace clic en el rack, devolver la ficha
+        const targetRack = boardEvent.target.closest('.rack');
+        if (targetRack) {
+            const fakeEvent = {
+                target: targetRack,
+                preventDefault: () => {},
+                dataTransfer: {
+                    getData: () => tileIndex
+                }
+            };
+            
+            console.log('Devolución simulado por clic:', tileIndex, 'al rack');
+            handleDrop(fakeEvent);
+            
+            // Limpiar
+            tile.classList.remove('selected');
+            document.removeEventListener('click', handleBoardClick);
+            return;
+        }
+    };
+    
+    // Agregar listener temporal
+    document.addEventListener('click', handleBoardClick);
+    
+    // Remover listener después de 5 segundos si no se usó
+    setTimeout(() => {
+        tile.classList.remove('selected');
+        document.removeEventListener('click', handleBoardClick);
+        showMessage('Selección de ficha cancelada', 'error');
+    }, 5000);
 }
 
 function handleBoardTileDragStart(e) {
@@ -427,22 +543,62 @@ function handleBoardTileTouchEnd(e) {
         return;
     }
     
-    // Encontrar el elemento bajo el toque
-    const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
-    const targetCell = elementBelow?.closest('.cell');
-    const targetRack = elementBelow?.closest('.rack');
+    // Buscar el elemento objetivo usando las coordenadas del toque
+    let targetElement = null;
     
-    if (targetCell || targetRack) {
+    // Primero intentar con elementFromPoint
+    try {
+        const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+        if (elementBelow) {
+            targetElement = elementBelow.closest('.cell') || elementBelow.closest('.rack');
+        }
+    } catch (error) {
+        console.log('elementFromPoint falló para ficha del tablero, usando método alternativo');
+    }
+    
+    // Si elementFromPoint falló, usar búsqueda manual
+    if (!targetElement) {
+        const touchX = touch.clientX;
+        const touchY = touch.clientY;
+        
+        // Buscar celdas del tablero
+        const cells = document.querySelectorAll('.cell');
+        for (let cell of cells) {
+            const rect = cell.getBoundingClientRect();
+            if (touchX >= rect.left && touchX <= rect.right && 
+                touchY >= rect.top && touchY <= rect.bottom) {
+                targetElement = cell;
+                break;
+            }
+        }
+        
+        // Si no se encontró celda, buscar rack
+        if (!targetElement) {
+            const rack = document.querySelector('.rack');
+            if (rack) {
+                const rect = rack.getBoundingClientRect();
+                if (touchX >= rect.left && touchX <= rect.right && 
+                    touchY >= rect.top && touchY <= rect.bottom) {
+                    targetElement = rack;
+                }
+            }
+        }
+    }
+    
+    if (targetElement) {
         // Simular un drop de ficha del tablero
         const fakeEvent = {
-            target: targetCell || targetRack,
+            target: targetElement,
             preventDefault: () => {},
             dataTransfer: {
                 getData: () => `board:${boardTouchSourceRow}:${boardTouchSourceCol}`
             }
         };
         
+        console.log('Drop simulado de ficha del tablero:', `board:${boardTouchSourceRow}:${boardTouchSourceCol}`, 'en', targetElement.className);
         handleDrop(fakeEvent);
+    } else {
+        console.log('No se encontró objetivo para el drop de ficha del tablero');
     }
     
     currentBoardTouchTile = null;

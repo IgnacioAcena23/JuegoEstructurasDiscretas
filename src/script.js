@@ -258,4 +258,17 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.style.overflow = 'auto';
         }
     });
+    
+    // Debug: verificar que los eventos táctiles estén disponibles
+    console.log('Touch events disponibles:', 'ontouchstart' in window);
+    console.log('User agent:', navigator.userAgent);
+    
+    // Verificar que las fichas tengan eventos táctiles después de un tiempo
+    setTimeout(() => {
+        const tiles = document.querySelectorAll('.tile');
+        console.log('Fichas encontradas:', tiles.length);
+        tiles.forEach((tile, index) => {
+            console.log(`Ficha ${index}:`, tile.dataset.index, 'touchstart:', tile.ontouchstart !== undefined);
+        });
+    }, 2000);
 }); 

@@ -231,6 +231,14 @@ body {
     background: linear-gradient(145deg, #ffd700, #ffed4e);
 }
 
+/* Estilos para selección móvil */
+.tile.mobile-selected {
+    transform: scale(1.2);
+    box-shadow: 0 0 20px rgba(52, 152, 219, 0.8);
+    border: 3px solid #3498db;
+    z-index: 1000;
+}
+
 .tile.on-board {
     cursor: grab;
 }
