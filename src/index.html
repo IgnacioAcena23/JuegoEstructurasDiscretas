@@ -10,6 +10,9 @@
     <div class="header">
         <h1> Scrabble</h1>
         <p>¡Forma palabras y gana puntos!</p>
+        <button class="instructions-btn" id="instructions-btn" title="Instrucciones del juego">
+            <span class="instructions-icon">ℹ</span>
+        </button>
     </div>
     
     <div class="game-container">
@@ -119,7 +122,7 @@
             <div class="victory-icon">🏆</div>
             <div class="victory-title" id="victory-title">¡Felicitaciones!</div>
             <div class="victory-text" id="victory-text"></div>
-            <button class="victory-button" id="victory-restart-btn">🔄 Volver a jugar</button>
+            <button class="victory-button" id="victory-restart-btn">Volver a jugar</button>
         </div>
     </div>
 
@@ -144,6 +147,141 @@
                     <div class="category-name">Permutación y Combinatoria</div>
                     <div class="category-description">Preguntas sobre permutaciones, combinaciones y principios de conteo</div>
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de instrucciones -->
+    <div class="instructions-modal" id="instructions-modal">
+        <div class="instructions-container">
+            <div class="instructions-header">
+                <h2> Instrucciones del Juego Scrabble</h2>
+                <button class="close-btn" id="close-instructions-btn">&times;</button>
+            </div>
+            <div class="instructions-content">
+                <div class="instructions-section">
+                    <h3> OBJETIVO DEL JUEGO</h3>
+                    <p>El objetivo es formar palabras en el tablero y obtener 100 puntos para ganar el juego. Cada letra tiene un valor específico, y las casillas especiales multiplican estos valores.</p>
+                </div>
+                
+                <div class="instructions-section">
+                    <h3>¿Cómo se juega?</h3>
+                    <h4>1. Inicio del Juego</h4>
+                    <ul>
+                        <li>Se elige que modalidad de preguntas se va a elegir</li>
+                        <li>El juego se inicia automáticamente con dos jugadores</li>
+                        <li>Cada jugador recibe 7 fichas aleatorias</li>
+                        <li>El primer jugador debe colocar su palabra pasando por la casilla central (★)</li>
+                    </ul>
+                    
+                    <h4>2. Tu Turno</h4>
+                    <ol>
+                        <li><strong>Arrastra fichas</strong> de tu rack al tablero para formar una palabra</li>
+                        <li><strong>Coloca las fichas</strong> en la misma fila o columna</li>
+                        <li><strong>Ajusta la posición</strong> de las fichas si es necesario (antes de confirmar)</li>
+                        <li><strong>Haz clic en "Jugar palabra"</strong> para confirmar y calcular puntos</li>
+                        <li><strong>Recibe nuevas fichas</strong> para mantener 7 en tu rack</li>
+                    </ol>
+                </div>
+                
+                <div class="instructions-section">
+                    <h3>SISTEMA DE PUNTUACIÓN</h3>
+                    <h4>Valores de Letras</h4>
+                    <ul>
+                        <li><strong>A, E, I, L, N, O, R, S, T, U:</strong> 1 punto</li>
+                        <li><strong>C, D, G:</strong> 2 puntos</li>
+                        <li><strong>B, M, P:</strong> 3 puntos</li>
+                        <li><strong>F, H, V, Y:</strong> 4 puntos</li>
+                        <li><strong>Q:</strong> 5 puntos</li>
+                        <li><strong>J, Ñ, X:</strong> 8 puntos</li>
+                        <li><strong>Z:</strong> 10 puntos</li>
+                        <li><strong>Comodín (?):</strong> 0 puntos</li>
+                    </ul>
+                    
+                    <h4>CASILLAS ESPECIALES</h4>
+                    <ul>
+                        <li><strong>★ (Rojo):</strong> Centro - La primera palabra debe pasar por esta casilla</li>
+                        <li><strong>L2 (Azul claro):</strong> Doble valor de letra</li>
+                        <li><strong>L3 (Azul oscuro):</strong> Triple valor de letra</li>
+                        <li><strong>P2 (Rosa):</strong> Doble valor de palabra</li>
+                        <li><strong>P3 (Rojo):</strong> Triple valor de palabra</li>
+                        <li><strong>Casilla normal (Marrón claro):</strong> Sin multiplicadores</li>
+                    </ul>
+                    
+                    <h4>BONIFICACIONES</h4>
+                    <ul>
+                        <li><strong>Bono Scrabble:</strong> 50 puntos extra por usar todas las 7 fichas en una jugada</li>
+                    </ul>
+                </div>
+                
+                <div class="instructions-section">
+                    <h3>BOTONES INTERACTIVOS</h3>
+                    <h4>Botones Principales</h4>
+                    <ul>
+                        <li><strong>Jugar palabra:</strong> Confirma la colocación y calcula puntuación</li>
+                        <li><strong>Pasar turno:</strong> Pasa al siguiente jugador sin jugar</li>
+                        <li><strong>Cambiar fichas:</strong> Permite intercambiar fichas no deseadas</li>
+                        <li><strong>Nuevo juego:</strong> Reinicia el juego completamente</li>
+                        <li><strong>🗺️</strong> Despliega una leyenda con las casillas especiales</li>
+                    </ul>
+                    
+                    <h4>Interacción con Fichas</h4>
+                    <ul>
+                        <li><strong>Arrastrar y soltar:</strong> Mueve fichas del rack al tablero</li>
+                        <li><strong>Clic en fichas:</strong> Selecciona fichas para intercambio (en modo cambio)</li>
+                        <li><strong>Hover:</strong> Efectos visuales en casillas y botones</li>
+                    </ul>
+                </div>
+                
+                <div class="instructions-section">
+                    <h3>CAMBIO DE FICHAS</h3>
+                    <h4>Cómo cambiar fichas:</h4>
+                    <ol>
+                        <li>Haz clic en <strong>"Cambiar fichas"</strong></li>
+                        <li><strong>Selecciona</strong> las fichas que quieres cambiar (se resaltarán en amarillo)</li>
+                        <li>Haz clic en <strong>"Confirmar cambio"</strong></li>
+                        <li>Recibirás nuevas fichas aleatorias</li>
+                    </ol>
+                    
+                    <h4>Reglas del cambio:</h4>
+                    <ul>
+                        <li>Puedes cambiar de 1 a 7 fichas</li>
+                        <li>Las fichas cambiadas vuelven a la bolsa</li>
+                        <li>Debes tener suficientes fichas en la bolsa</li>
+                        <li>El cambio consume tu turno</li>
+                    </ul>
+                </div>
+                
+                <div class="instructions-section">
+                    <h3>MOVIMIENTO DE FICHAS DEL TABLERO</h3>
+                    <p><strong>Características del movimiento:</strong></p>
+                    <ul>
+                        <li>Solo puedes mover fichas a casillas vacías</li>
+                        <li>Solo puedes mover fichas que no han sido confirmadas (fichas colocadas en turnos anteriores)</li>
+                        <li>Las fichas confirmadas (después de jugar una palabra) no se pueden mover</li>
+                        <li>El movimiento no consume turno</li>
+                        <li>Útil para corregir errores de colocación antes de confirmar</li>
+                        <li><strong>Siempre disponible</strong> para fichas no confirmadas</li>
+                    </ul>
+                </div>
+                
+                <div class="instructions-section">
+                    <h3>DEVOLUCIÓN DE FICHAS AL RACK</h3>
+                    <p><strong>Características de la devolución:</strong></p>
+                    <ul>
+                        <li>Solo puedes devolver tus propias fichas (no confirmadas)</li>
+                        <li>Solo puedes devolver fichas que no han sido confirmadas</li>
+                        <li>Debes tener espacio en tu rack (máximo 7 fichas)</li>
+                        <li>La devolución no consume turno</li>
+                        <li>Útil para corregir errores de colocación</li>
+                        <li><strong>Siempre disponible</strong> para fichas no confirmadas</li>
+                    </ul>
+                </div>
+                
+                <div class="instructions-section">
+                    <h3>GANADOR</h3>
+                    <p>El jugador que llegue primero a <strong>100 puntos</strong> será el ganador.</p>
+                </div>
             </div>
         </div>
     </div>

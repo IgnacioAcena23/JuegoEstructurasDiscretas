@@ -2,11 +2,12 @@
 
 ## 🎯 Objetivo del Juego
 
-El objetivo es formar palabras en el tablero para obtener la mayor puntuación posible. Cada letra tiene un valor específico, y las casillas especiales multiplican estos valores.
+El objetivo es formar palabras en el tablero y obtener 100 puntos para ganar el juego. Cada letra tiene un valor específico, y las casillas especiales multiplican estos valores.
 
-## 🎮 Cómo Jugar
+## ¿Cómo se juega?
 
 ### 1. Inicio del Juego
+- Se elige que modalidad de preguntas se va a elegir
 - El juego se inicia automáticamente con dos jugadores
 - Cada jugador recibe 7 fichas aleatorias
 - El primer jugador debe colocar su palabra pasando por la casilla central (★)
@@ -44,18 +45,16 @@ El objetivo es formar palabras en el tablero para obtener la mayor puntuación p
 - **P3** (Rojo): Triple valor de palabra
 - **Casilla normal** (Marrón claro): Sin multiplicadores
 
-> **💡 Tip**: Consulta la leyenda debajo del marcador para ver todos los tipos de casillas.
-
 ### Bonificaciones
 - **Bono Scrabble**: 50 puntos extra por usar todas las 7 fichas en una jugada
 
 ## 🎮 Controles del Juego
 
 ### Botones Principales
-- **🎯 Jugar palabra**: Confirma la colocación y calcula puntuación
-- **⏭️ Pasar turno**: Pasa al siguiente jugador sin jugar
-- **🔄 Cambiar fichas**: Permite intercambiar fichas no deseadas
-- **🆕 Nuevo juego**: Reinicia el juego completamente
+- **Jugar palabra**: Confirma la colocación y calcula puntuación
+- **Pasar turno**: Pasa al siguiente jugador sin jugar
+- **Cambiar fichas**: Permite intercambiar fichas no deseadas
+- **Nuevo juego**: Reinicia el juego completamente
 
 ### Interacción con Fichas
 - **Arrastrar y soltar**: Mueve fichas del rack al tablero
@@ -104,95 +103,4 @@ El objetivo es formar palabras en el tablero para obtener la mayor puntuación p
 - Útil para corregir errores de colocación
 - **Siempre disponible** para fichas no confirmadas
 
-## 📊 Información del Juego
-
- ### Panel de Información
- - **Fichas restantes**: Número de fichas en la bolsa
- - **Ronda actual**: Número de la ronda en curso (se completa cuando ambos jugadores han jugado)
- - **Primera jugada**: Indica si es la primera jugada del juego
-
-### Marcador
-- **Jugador activo**: Se resalta en amarillo
-- **Puntuación**: Se actualiza automáticamente después de cada jugada
-
-## 🎯 Estrategias
-
-### Consejos para principiantes:
-1. **Usa las casillas especiales**: Aprovecha los multiplicadores
-2. **Forma palabras largas**: Más letras = más puntos
-3. **Conecta palabras**: Crea múltiples palabras en una jugada
-4. **Usa todas las fichas**: Obtén el bono de 50 puntos
-5. **Cambia fichas malas**: No dudes en cambiar fichas difíciles
-
-### Palabras de alto valor:
-- Busca palabras con letras de alto valor (J, Ñ, X, Z, Q)
-- Colócalas en casillas de multiplicador de letra
-- Intenta usar casillas de multiplicador de palabra
-
-## 🚨 Mensajes del Juego
-
-### Mensajes de éxito:
-- "¡Palabra válida! +X puntos"
-- "Fichas cambiadas"
-- "Turno pasado"
-- "Ficha 'X' devuelta al rack"
-
-### Mensajes de error:
-- "Debes colocar al menos una ficha"
-- "Las fichas deben estar en la misma fila o columna"
-- "La primera palabra debe pasar por el centro"
-- "Colocación inválida - la palabra debe conectar con fichas existentes"
-- "Primero confirma o cancela las fichas en el tablero"
-- "Termina el modo de cambio de fichas primero"
-- "Solo puedes devolver tus propias fichas"
-- "No puedes devolver fichas confirmadas"
-- "Tu rack está lleno, no puedes devolver más fichas"
-
-## 🎮 Fin del Juego
-
-El juego continúa hasta que:
-- Se agoten todas las fichas de la bolsa
-- Un jugador use todas sus fichas
-- Ambos jugadores pasen turno consecutivamente
-
-**Ganador**: El jugador con mayor puntuación al final del juego.
-
-## 🛠️ Solución de Problemas
-
-### Si el juego no responde:
-- Recarga la página (F5)
-- Verifica que JavaScript esté habilitado
-- Usa un navegador moderno (Chrome, Firefox, Safari, Edge)
-
-### Si las fichas no se mueven:
-- Asegúrate de hacer clic y arrastrar correctamente
-- Verifica que no estés en modo de cambio de fichas
-- Comprueba que la casilla de destino esté vacía
-
----
-
-## 🎓 Sistema de Preguntas Educativas
-
-### ¿Cuándo aparecen las preguntas?
-- **Cada 5 rondas completas** (después de que ambos jugadores hayan jugado)
-- Se muestran preguntas aleatorias de matemáticas para **ambos jugadores**
-- **+10 puntos** por respuesta correcta
-
-### Cómo funciona:
-1. **Aparece automáticamente** después de completar 5 rondas
-2. **Primero responde el Jugador 1**, luego el Jugador 2
-3. **Selecciona una respuesta** de las 4 opciones disponibles
-4. **Feedback inmediato** - se marca la respuesta correcta
-5. **Puntos otorgados** si respondes correctamente
-6. **Continúa el juego** después de que ambos hayan respondido
-
-### Características:
-- **21 preguntas diferentes** de combinatoria y probabilidad
-- **No se repiten** hasta que se hayan usado todas
-- **Preguntas únicas** para cada jugador en cada ronda
-- **Sistema justo** - ambos jugadores reciben preguntas consecutivamente
-- **Sistema educativo** que combina diversión y aprendizaje
-
----
-
-¡Disfruta jugando Scrabble! 🎯✨ 
+**Ganador**: El jugador que llegue primero a 100 puntos será el ganador.

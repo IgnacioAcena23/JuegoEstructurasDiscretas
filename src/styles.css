@@ -27,6 +27,39 @@ body {
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
+.header {
+    position: relative;
+}
+
+.instructions-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: white;
+    color: #3498db;
+    border: 2px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+}
+
+.instructions-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+}
+
+.instructions-icon {
+    font-size: 20px;
+}
+
 .game-container {
     display: flex;
     flex-direction: column;
@@ -1037,5 +1070,153 @@ button:disabled {
 
     .category-description {
         font-size: 0.9em;
+    }
+}
+
+/* Estilos para el modal de instrucciones */
+.instructions-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.instructions-container {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    margin: 2% auto;
+    padding: 0;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideInInstructions 0.3s ease;
+}
+
+@keyframes slideInInstructions {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.instructions-header {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    padding: 25px 30px;
+    border-radius: 20px 20px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.instructions-header h2 {
+    margin: 0;
+    font-size: 1.8em;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.close-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.instructions-content {
+    padding: 30px;
+    line-height: 1.6;
+}
+
+.instructions-section {
+    margin-bottom: 30px;
+}
+
+.instructions-section h3 {
+    color: #2c3e50;
+    font-size: 1.4em;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 8px;
+}
+
+.instructions-section h4 {
+    color: #34495e;
+    font-size: 1.1em;
+    margin: 20px 0 10px 0;
+}
+
+.instructions-section p {
+    margin-bottom: 15px;
+    color: #555;
+}
+
+.instructions-section ul,
+.instructions-section ol {
+    margin: 15px 0;
+    padding-left: 25px;
+}
+
+.instructions-section li {
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.instructions-section strong {
+    color: #2c3e50;
+}
+
+/* Responsive para el modal de instrucciones */
+@media (max-width: 768px) {
+    .instructions-container {
+        width: 95%;
+        margin: 5% auto;
+        max-height: 95vh;
+    }
+    
+    .instructions-header {
+        padding: 20px 25px;
+    }
+    
+    .instructions-header h2 {
+        font-size: 1.5em;
+    }
+    
+    .instructions-content {
+        padding: 20px;
+    }
+    
+    .instructions-section h3 {
+        font-size: 1.3em;
+    }
+    
+    .instructions-section h4 {
+        font-size: 1em;
     }
 } 

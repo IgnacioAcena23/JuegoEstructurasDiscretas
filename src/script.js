@@ -207,4 +207,39 @@ let gameState = {
     questionQueue: [], // Cola de jugadores que deben responder preguntas
     currentQuestionPlayer: null, // Jugador actual respondiendo pregunta
     selectedCategory: null // Categoría de preguntas seleccionada
-}; 
+};
+
+// Funcionalidad para el modal de instrucciones
+document.addEventListener('DOMContentLoaded', function() {
+    const instructionsBtn = document.getElementById('instructions-btn');
+    const instructionsModal = document.getElementById('instructions-modal');
+    const closeInstructionsBtn = document.getElementById('close-instructions-btn');
+
+    // Abrir modal de instrucciones
+    instructionsBtn.addEventListener('click', function() {
+        instructionsModal.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // Prevenir scroll del body
+    });
+
+    // Cerrar modal de instrucciones
+    closeInstructionsBtn.addEventListener('click', function() {
+        instructionsModal.style.display = 'none';
+        document.body.style.overflow = 'auto'; // Restaurar scroll del body
+    });
+
+    // Cerrar modal al hacer clic fuera de él
+    instructionsModal.addEventListener('click', function(event) {
+        if (event.target === instructionsModal) {
+            instructionsModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
+
+    // Cerrar modal con la tecla Escape
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && instructionsModal.style.display === 'block') {
+            instructionsModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
+}); 
