@@ -1,0 +1,89 @@
+1. ¿Qué es un homomorfismo?
+A. Una función entre dos estructuras algebraicas que preserva la operación.
+B. Una función que asocia elementos entre dos conjuntos diferentes.
+C. Una función que tiene un elemento neutro.
+D. Una operación que es asociativa y conmutativa.
+
+2. Si una operación "∗" en un conjunto G tiene un elemento neutro y cada elemento tiene un simétrico, ¿es (G,∗) necesariamente un grupo?
+A. Sí, siempre.
+B. No, se necesita que el elemento neutro sea 0.
+C. No, se necesita también que sea una ley de composición interna y asociativa. (Correcto)
+D. Sí, además es conmutativa.
+
+3. ¿Qué es un semigrupo?
+A. Un conjunto con una operación interna que es conmutativa.
+B. Un conjunto con una operación interna que tiene un elemento neutro.
+C. Un conjunto con una operación interna donde cada elemento tiene un simétrico.
+D. Un conjunto con una operación interna que es asociativa. (Correcto)
+
+4. El conjunto de los números naturales incluyendo el 0, con la operación de suma (+), ¿es un monoide?
+A. No
+B. Tal vez
+C. Sí
+D. Ni idea
+
+5. Si una función es un homomorfismo y es biyectiva, se le llama:
+A. Endomorfismo
+B. Monomorfismo
+C. Epimorfismo
+D. Isomorfismo (Correcto)
+
+6. Si el núcleo (kernel) de un homomorfismo f es el elemento neutro del conjunto de partida, ¿qué se puede decir de la función?
+A. Es inyectiva (Correcto)
+B. La imagen es el conjunto de partida
+C. No es un homomorfismo
+D. Es sobreyectiva
+
+7. Una función f es un "epimorfismo" si es un homomorfismo y es:
+A. Biyectiva
+B. Inyectiva
+C. Discreta
+D. Sobreyectiva (Correcto)
+
+8. La imagen (image) de un homomorfismo es:
+A. El conjunto de partida.
+B. El conjunto de llegada.
+C. Es el conjunto de todos los valores de salida posibles (Correcto)
+D. El conjunto de todos los elementos del dominio que se mapean al neutro del codominio.
+
+9. ¿Cuál es la propiedad que distingue a un **monoide** de un **semigrupo**?
+A. La existencia de un elemento simétrico para cada elemento.
+B. La asociatividad de la operación.
+C. La conmutatividad de la operación.
+D. La existencia de un elemento neutro. (Correcto)
+
+10.  En el contexto de las estructuras algebraicas, ¿cuál es la propiedad que diferencia a un **grupo abeliano** de un **grupo**?
+A. La asociatividad de la operación.
+B. La existencia del elemento neutro.
+C. La existencia de un elemento simétrico para cada elemento.
+D. La conmutatividad de la operación. (Correcto)
+
+11. Si una función f:G→H es un homomorfismo y su núcleo (kernel) es el elemento neutro del grupo G, entonces la función es:
+A. Sobreyectiva (epimorfismo).
+B. Un endomorfismo.
+C. Inyectiva (monomorfismo). (Correcto)
+D. Biyectiva (isomorfismo).
+
+12. ¿Qué diferencia a la estructura algebraica (Z,+) de un grupo abeliano?
+A. No todos los elementos tienen un elemento simétrico.
+B. Ninguna. La estructura es un grupo abeliano. (Correcto)
+C. La operación no es asociativa.
+D. La operación no es conmutativa.
+
+13. ¿Qué tipo de homomorfismo es una función que tiene un núcleo trivial y su imagen es igual al codominio?
+A. Isomorfismo (Correcto)
+B. Endomorfismo
+C. Monomorfismo
+D. Epimorfismo
+
+14. Una función que es un homomorfismo de un grupo en sí mismo (f:G→G) se conoce como:
+A. Isomorfismo
+B. Monomorfismo
+C. Endomorfismo (Correcto)
+D. Epimorfismo
+
+15. Si una función f:G→H es un homomorfismo **inyectivo**, ¿qué se puede decir de su núcleo?
+A. Es un subgrupo de G
+B. Es el conjunto vacío
+C. Es el elemento neutro del grupo G (Correcto)
+D. Es el conjunto completo G

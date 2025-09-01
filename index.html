@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrabble - Juego Completo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="header">
+        <h1> Scrabble</h1>
+        <p>¡Forma palabras y gana puntos!</p>
+    </div>
+    
+    <div class="game-container">
+        <div class="game-info">
+            <div class="info-item">
+                <div class="info-label">Fichas restantes</div>
+                <div class="info-value" id="remaining-tiles">100</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Ronda</div>
+                <div class="info-value" id="current-round">1</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Primera jugada</div>
+                <div class="info-value" id="first-move">Sí</div>
+            </div>
+        </div>
+
+        <div class="score-board">
+            <div class="player" id="player1">
+                <div class="player-name">Jugador 1</div>
+                <div class="score">0 puntos</div>
+            </div>
+            <div class="player" id="player2">
+                <div class="player-name">Jugador 2</div>
+                <div class="score">0 puntos</div>
+            </div>
+        </div>
+
+        <div class="board-container">
+            <!-- Contenedor de mensajes a la izquierda -->
+            <div class="messages-sidebar">
+                <div class="message hidden" id="message"></div>
+                <div class="exchange-controls hidden" id="exchange-controls">
+                    <p><strong>Selecciona las fichas que deseas cambiar</strong></p>
+                    <div>
+                        <button class="btn-primary" id="confirm-exchange-btn"> Confirmar cambio</button>
+                        <button class="btn-secondary" id="cancel-exchange-btn"> Cancelar</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="board" id="scrabble-board">
+                <!-- El tablero se generará con JavaScript -->
+            </div>
+            
+            <button class="legend-toggle" id="legend-toggle" title="Mostrar/Ocultar Leyenda">
+                🗺️
+            </button>
+            
+            <div class="legend" id="legend">
+                <div class="legend-item">
+                    <div class="legend-cell center">★</div>
+                    <span>Centro - Primera palabra</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-cell double-letter">L2</div>
+                    <span>Doble letra</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-cell triple-letter">L3</div>
+                    <span>Triple letra</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-cell double-word">P2</div>
+                    <span>Doble palabra</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-cell triple-word">P3</div>
+                    <span>Triple palabra</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-cell normal"></div>
+                    <span>Casilla normal</span>
+                </div>
+            </div>
+            
+            <div class="controls-sidebar">
+                <div class="controls">
+                    <button class="btn-primary" id="play-btn"> Jugar palabra</button>
+                    <button class="btn-secondary" id="pass-btn"> Pasar turno</button>
+                    <button class="btn-info" id="exchange-btn"> Cambiar fichas</button>
+                    <button class="btn-secondary" id="new-game-btn"> Nuevo juego</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="rack" id="player-rack">
+            <!-- Las fichas del jugador se generarán aquí -->
+        </div>
+    </div>
+
+    <!-- Modal para preguntas -->
+    <div class="question-modal" id="question-modal">
+        <div class="question-container">
+            <div class="question-title" id="question-title">Pregunta del Jugador</div>
+            <div class="question-text" id="question-text"></div>
+            <div class="question-options" id="question-options"></div>
+            <div class="question-result hidden" id="question-result"></div>
+            <button class="question-continue hidden" id="question-continue">Continuar</button>
+        </div>
+    </div>
+
+    <!-- Modal de victoria -->
+    <div class="victory-modal" id="victory-modal">
+        <div class="victory-container">
+            <div class="victory-icon">🏆</div>
+            <div class="victory-title" id="victory-title">¡Felicitaciones!</div>
+            <div class="victory-text" id="victory-text"></div>
+            <button class="victory-button" id="victory-restart-btn">🔄 Volver a jugar</button>
+        </div>
+    </div>
+
+    <!-- Modal de selección de categorías -->
+    <div class="category-modal" id="category-modal">
+        <div class="category-container">
+            <div class="category-title"> Selecciona la categoría de preguntas</div>
+            <div class="category-subtitle">Las preguntas aparecerán cada 2 rondas</div>
+            <div class="category-options">
+                <button class="category-option" data-category="conjuntos">
+                    <div class="category-icon">📊</div>
+                    <div class="category-name">Teoría de Conjuntos</div>
+                    <div class="category-description">Preguntas sobre conjuntos, operaciones y propiedades</div>
+                </button>
+                <button class="category-option" data-category="grupos">
+                    <div class="category-icon">🔢</div>
+                    <div class="category-name">Estructuras Algebraicas y Homomorfismos</div>
+                    <div class="category-description">Preguntas sobre grupos, semigrupos, monoides y homomorfismos</div>
+                </button>
+                <button class="category-option" data-category="permutaciones">
+                    <div class="category-icon">🎲</div>
+                    <div class="category-name">Permutación y Combinatoria</div>
+                    <div class="category-description">Preguntas sobre permutaciones, combinaciones y principios de conteo</div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts externos -->
+    <script src="questionCategories.js"></script>
+    <script src="script.js"></script>
+    <script src="game.js"></script>
+    <script src="gameLogic.js"></script>
+</body>
+</html> 

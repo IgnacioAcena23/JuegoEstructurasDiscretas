@@ -1,0 +1,89 @@
+1. ¿Cuál de las siguientes notaciones representa el conjunto de los números enteros?
+A. Q
+B. R
+C. N
+D. Z  (Correcto)
+
+2. Dado el conjunto P={x∈N∣x<5}, ¿cuáles son los elementos de P?
+A. {1,2,3,4} (Correcto)
+B. {0,1,2,3,4,5}
+C. {0,1,2,3,4}
+D. {1,2,3,4,5}
+
+3. Si el conjunto M={x∣x es una letra en la palabra matematicas} ¿cuántos elementos tiene M?
+A. 8 (Correcto)
+B. 7
+C. 10
+D. 11
+
+4. Se dice que la **unión** de conjuntos es **conmutativa**. ¿Qué significa esto?
+A. La unión de un conjunto consigo mismo es el mismo conjunto.
+B. (A∪B)∪C=A∪(B∪C)
+C. A∪B=B∪A (Correcto)
+D. La unión de un conjunto con el conjunto vacío es el mismo conjunto.
+
+5. En el contexto de la "unión" de conjuntos, ¿cuál es el elemento neutro?
+A. No existe elemento neutro.
+B. El conjunto universal (U)
+C. El conjunto vacío (∅) (Correcto)
+D. El mismo conjunto A (A)
+
+6. Se define la operación a∗b=a+b+1 en el conjunto de los números enteros. ¿Es esta una ley de composición interna?
+A. Sí, porque la suma de enteros siempre es un entero, y sumar 1 mantiene el resultado como un entero. (Correcto)
+B. No, porque el número 1 no está definido en la operación.
+C. No, porque el resultado puede ser un número fraccionario.
+D. Sí, solo si los números son positivos.
+
+7. cuál es el elemento simétrico o inverso para la multiplicación de 3/4?
+A. −3/4
+B. 4/3 (Correcto)
+C. 3
+D. 1
+
+8. En el conjunto de las matrices 2x2, ¿es la suma una ley de composición interna?
+A. No, porque el resultado puede no ser una matriz.
+B. Solo si las matrices tienen números enteros.
+C. Sí, porque el resultado de sumar dos matrices 2x2 es otra matriz 2x2. (Correcto)
+D. No, porque la suma de matrices solo funciona para matrices cuadradas.
+
+9. Si una operación "∗" es asociativa, ¿qué significa esto?
+A. a∗b=b∗a
+B. a∗a´=e. Donde "a´" es el elemento simetrico
+C. a∗e=a. Donde "e" es el elemento neutro
+D. (a∗b)∗c=a∗(b∗c)
+
+10. En el conjunto de los números pares, ¿la operación de multiplicación es una ley de composición interna?
+A. No
+B. Sí (Correcto)
+C. Solo si los números son positivos
+D. Solo si uno de los números es 0
+
+11. Si una operación es conmutativa, ¿necesariamente es asociativa?
+A. No, Las propiedades son independientes (Correcto)
+B. Solo si se usa el elemento neutro
+C. Solo si los números son enteros
+D. Sí, siempre
+
+12. En el conjunto de las matrices 2x2, ¿la operación de multiplicación es conmutativa?
+A. Solo si las matrices son iguales
+B. Sí, siempre
+C. La multiplicación de matrices no es conmutativa para todas las matrices (Correcto)
+D. Solo si las matrices son singulares
+
+13. En el conjunto de los números enteros. ¿La operación a∗b=a+b+a es asociativa?
+A. No (Correcto)
+B. Solo si el resultado es cero
+C. Sí
+D. Solo si los números son positivos
+
+14. En el conjunto de las matrices 2x2, ¿la operación de multiplicación tiene un elemento neutro?
+A. Sí, la matriz identidad (Correcto)
+B. No, en general
+C. Sí, la matriz nula
+D. Sí, pero solo para matrices no singulares
+
+15. Considera el conjunto S={e,a,b} con la operación "∗" definida por la tabla de Cayley. Si (a∗b)∗a=e y a∗(b∗a)=b entonces la operación:
+A. No es asociativa (Correcto)
+B. Es conmutativa
+C. No se puede resolver
+D. No tiene elemento neutro
