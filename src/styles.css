@@ -60,6 +60,31 @@ body {
     font-size: 20px;
 }
 
+/* Mensaje de ayuda para móviles */
+.mobile-help {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+    border: 2px solid #3498db;
+    color: #2c3e50;
+    font-size: 14px;
+}
+
+.mobile-help p {
+    margin: 0;
+}
+
+/* Ocultar en dispositivos de escritorio */
+@media (min-width: 769px) {
+    .mobile-help {
+        display: none;
+    }
+}
+
 .game-container {
     display: flex;
     flex-direction: column;
@@ -182,6 +207,24 @@ body {
     transform: rotate(5deg);
 }
 
+/* Estilos para dispositivos táctiles */
+@media (hover: none) and (pointer: coarse) {
+    .tile {
+        touch-action: none;
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+    }
+    
+    .cell {
+        touch-action: none;
+    }
+    
+    .rack {
+        touch-action: none;
+    }
+}
+
 .tile.selected {
     transform: translateY(-8px) scale(1.1);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
@@ -207,6 +250,14 @@ body {
 .tile.on-board.dragging {
     opacity: 0.7;
     transform: rotate(5deg) scale(1.1);
+}
+
+/* Indicador visual para arrastre táctil */
+.tile.touch-dragging {
+    opacity: 0.8;
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
 }
 
 .tile-value {
@@ -919,12 +970,28 @@ button:disabled {
         width: 30px;
         height: 30px;
         font-size: 8px;
+        touch-action: none;
     }
     
     .tile {
         width: 26px;
         height: 26px;
         font-size: 14px;
+        touch-action: none;
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+    }
+    
+    /* Mejorar el feedback táctil en móviles */
+    .tile:active {
+        transform: scale(0.95);
+        transition: transform 0.1s ease;
+    }
+    
+    .cell:active {
+        transform: scale(0.95);
+        transition: transform 0.1s ease;
     }
     
     .controls {

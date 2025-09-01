@@ -245,8 +245,14 @@ function createTileElement(tile, index) {
     if (gameState.exchangeMode) {
         tileElement.addEventListener('click', () => handleTileSelection(index));
     } else {
+        // Eventos de arrastre para escritorio
         tileElement.addEventListener('dragstart', handleDragStart);
         tileElement.addEventListener('dragend', handleDragEnd);
+        
+        // Eventos táctiles para móviles
+        tileElement.addEventListener('touchstart', handleTouchStart);
+        tileElement.addEventListener('touchmove', handleTouchMove);
+        tileElement.addEventListener('touchend', handleTouchEnd);
     }
     
     return tileElement;
@@ -275,6 +281,86 @@ function handleDragEnd(e) {
     e.target.classList.remove('dragging');
 }
 
+// Variables para el sistema táctil
+let touchStartX = 0;
+let touchStartY = 0;
+let touchStartTime = 0;
+let currentTouchTile = null;
+let touchOffsetX = 0;
+let touchOffsetY = 0;
+
+function handleTouchStart(e) {
+    e.preventDefault();
+    const touch = e.touches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+    touchStartTime = Date.now();
+    currentTouchTile = e.target;
+    
+    // Calcular offset desde el centro de la ficha
+    const rect = currentTouchTile.getBoundingClientRect();
+    touchOffsetX = touch.clientX - rect.left;
+    touchOffsetY = touch.clientY - rect.top;
+    
+    currentTouchTile.classList.add('dragging');
+    currentTouchTile.style.zIndex = '1000';
+}
+
+function handleTouchMove(e) {
+    e.preventDefault();
+    if (!currentTouchTile) return;
+    
+    const touch = e.touches[0];
+    const deltaX = touch.clientX - touchStartX;
+    const deltaY = touch.clientY - touchStartY;
+    
+    // Solo mover si el desplazamiento es significativo
+    if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+        currentTouchTile.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+    }
+}
+
+function handleTouchEnd(e) {
+    e.preventDefault();
+    if (!currentTouchTile) return;
+    
+    const touch = e.changedTouches[0];
+    const deltaX = touch.clientX - touchStartX;
+    const deltaY = touch.clientY - touchStartY;
+    const touchDuration = Date.now() - touchStartTime;
+    
+    // Resetear transformación
+    currentTouchTile.style.transform = '';
+    currentTouchTile.style.zIndex = '';
+    currentTouchTile.classList.remove('dragging');
+    
+    // Si fue un toque corto y sin movimiento, no hacer nada
+    if (touchDuration < 200 && Math.abs(deltaX) < 10 && Math.abs(deltaY) < 10) {
+        return;
+    }
+    
+    // Encontrar el elemento bajo el toque
+    const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+    const targetCell = elementBelow?.closest('.cell');
+    const targetRack = elementBelow?.closest('.rack');
+    
+    if (targetCell || targetRack) {
+        // Simular un drop
+        const tileIndex = currentTouchTile.dataset.index;
+        const fakeEvent = {
+            target: targetCell || targetRack,
+            preventDefault: () => {},
+            dataTransfer: {
+                getData: () => tileIndex
+            }
+        };
+        
+        handleDrop(fakeEvent);
+    }
+    
+    currentTouchTile = null;
+}
+
 function handleBoardTileDragStart(e) {
     e.dataTransfer.setData('text/plain', `board:${e.target.dataset.row}:${e.target.dataset.col}`);
     e.target.classList.add('dragging');
@@ -282,6 +368,84 @@ function handleBoardTileDragStart(e) {
 
 function handleBoardTileDragEnd(e) {
     e.target.classList.remove('dragging');
+}
+
+// Variables para el sistema táctil del tablero
+let boardTouchStartX = 0;
+let boardTouchStartY = 0;
+let boardTouchStartTime = 0;
+let currentBoardTouchTile = null;
+let boardTouchSourceRow = 0;
+let boardTouchSourceCol = 0;
+
+function handleBoardTileTouchStart(e) {
+    e.preventDefault();
+    const touch = e.touches[0];
+    boardTouchStartX = touch.clientX;
+    boardTouchStartY = touch.clientY;
+    boardTouchStartTime = Date.now();
+    currentBoardTouchTile = e.target;
+    
+    // Obtener la posición de la ficha en el tablero
+    boardTouchSourceRow = parseInt(currentBoardTouchTile.dataset.row);
+    boardTouchSourceCol = parseInt(currentBoardTouchTile.dataset.col);
+    
+    currentBoardTouchTile.classList.add('dragging');
+    currentBoardTouchTile.style.zIndex = '1000';
+}
+
+function handleBoardTileTouchMove(e) {
+    e.preventDefault();
+    if (!currentBoardTouchTile) return;
+    
+    const touch = e.touches[0];
+    const deltaX = touch.clientX - boardTouchStartX;
+    const deltaY = touch.clientY - boardTouchStartY;
+    
+    // Solo mover si el desplazamiento es significativo
+    if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+        currentBoardTouchTile.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+    }
+}
+
+function handleBoardTileTouchEnd(e) {
+    e.preventDefault();
+    if (!currentBoardTouchTile) return;
+    
+    const touch = e.changedTouches[0];
+    const deltaX = touch.clientX - boardTouchStartX;
+    const deltaY = touch.clientY - boardTouchStartY;
+    const touchDuration = Date.now() - boardTouchStartTime;
+    
+    // Resetear transformación
+    currentBoardTouchTile.style.transform = '';
+    currentBoardTouchTile.style.zIndex = '';
+    currentBoardTouchTile.classList.remove('dragging');
+    
+    // Si fue un toque corto y sin movimiento, no hacer nada
+    if (touchDuration < 200 && Math.abs(deltaX) < 10 && Math.abs(deltaY) < 10) {
+        return;
+    }
+    
+    // Encontrar el elemento bajo el toque
+    const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+    const targetCell = elementBelow?.closest('.cell');
+    const targetRack = elementBelow?.closest('.rack');
+    
+    if (targetCell || targetRack) {
+        // Simular un drop de ficha del tablero
+        const fakeEvent = {
+            target: targetCell || targetRack,
+            preventDefault: () => {},
+            dataTransfer: {
+                getData: () => `board:${boardTouchSourceRow}:${boardTouchSourceCol}`
+            }
+        };
+        
+        handleDrop(fakeEvent);
+    }
+    
+    currentBoardTouchTile = null;
 }
 
 function handleDragOver(e) {
@@ -432,6 +596,11 @@ function updateBoard() {
                 tileElement.draggable = true;
                 tileElement.addEventListener('dragstart', handleBoardTileDragStart);
                 tileElement.addEventListener('dragend', handleBoardTileDragEnd);
+                
+                // Eventos táctiles para móviles
+                tileElement.addEventListener('touchstart', handleBoardTileTouchStart);
+                tileElement.addEventListener('touchmove', handleBoardTileTouchMove);
+                tileElement.addEventListener('touchend', handleBoardTileTouchEnd);
             } else {
                 // Fichas confirmadas no son arrastrables
                 tileElement.draggable = false;

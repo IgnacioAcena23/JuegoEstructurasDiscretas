@@ -214,6 +214,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const instructionsBtn = document.getElementById('instructions-btn');
     const instructionsModal = document.getElementById('instructions-modal');
     const closeInstructionsBtn = document.getElementById('close-instructions-btn');
+    const mobileHelp = document.getElementById('mobile-help');
+
+    // Detectar si es un dispositivo móvil
+    function isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+               (window.innerWidth <= 768);
+    }
+
+    // Mostrar/ocultar mensaje de ayuda móvil
+    if (mobileHelp) {
+        if (isMobileDevice()) {
+            mobileHelp.style.display = 'block';
+        } else {
+            mobileHelp.style.display = 'none';
+        }
+    }
 
     // Abrir modal de instrucciones
     instructionsBtn.addEventListener('click', function() {
