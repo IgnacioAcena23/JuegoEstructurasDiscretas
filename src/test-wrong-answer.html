@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Audio WrongAnswer</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        button {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #c82333;
+        }
+        .status {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .warning { color: #ffc107; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>❌ Prueba de Audio WrongAnswer.mp3</h1>
+        <p>Esta página te permite probar específicamente el audio de respuesta incorrecta.</p>
+        
+        <div class="status">
+            <h3>Estado de la Configuración:</h3>
+            <div id="config-status">Verificando...</div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🎵 Pruebas de Audio</h3>
+            <button onclick="testWrongAnswer()">❌ Probar WrongAnswer.mp3</button>
+            <button onclick="testTrueAnswer()">✅ Probar TrueAnswer.mp3</button>
+            <button onclick="testCongrats()">🎉 Probar Congrats.mp3</button>
+            <button onclick="testAllAudios()">🔄 Probar Todos los Audios</button>
+            
+            <div id="test-result"></div>
+        </div>
+        
+        <div class="log">
+            <strong>Logs de Consola:</strong>
+            <div id="log-content">
+                Los logs aparecerán aquí...
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="javaScript/config.js"></script>
+    
+    <script>
+        // Función para agregar logs a la interfaz
+        function addLog(message, type = 'log') {
+            const logContent = document.getElementById('log-content');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'warn' ? 'warning' : 'success';
+            logContent.innerHTML += `<span class="${className}">[${timestamp}] ${message}</span><br>`;
+            logContent.scrollTop = logContent.scrollHeight;
+        }
+        
+        // Interceptar console.log para mostrar en la interfaz
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addLog('LOG: ' + args.join(' '), 'log');
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addLog('ERROR: ' + args.join(' '), 'error');
+        };
+        
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            addLog('WARN: ' + args.join(' '), 'warn');
+        };
+        
+        // Función para probar WrongAnswer.mp3
+        function testWrongAnswer() {
+            console.log('❌ Probando audio WrongAnswer.mp3...');
+            const resultDiv = document.getElementById('test-result');
+            resultDiv.innerHTML = '<span style="color: #dc3545;">🔄 Probando WrongAnswer.mp3...</span>';
+            
+            try {
+                if (typeof playAudio === 'function') {
+                    playAudio('incorrect');
+                    resultDiv.innerHTML = '<span style="color: #28a745;">✅ WrongAnswer.mp3 reproducido correctamente</span>';
+                    console.log('✅ WrongAnswer.mp3 reproducido');
+                } else {
+                    resultDiv.innerHTML = '<span style="color: #dc3545;">❌ Función playAudio no disponible</span>';
+                    console.error('❌ Función playAudio no disponible');
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span style="color: #dc3545;">❌ Error: ${error.message}</span>`;
+                console.error('❌ Error reproduciendo WrongAnswer.mp3:', error);
+            }
+        }
+        
+        // Función para probar TrueAnswer.mp3
+        function testTrueAnswer() {
+            console.log('✅ Probando audio TrueAnswer.mp3...');
+            const resultDiv = document.getElementById('test-result');
+            resultDiv.innerHTML = '<span style="color: #ffc107;">🔄 Probando TrueAnswer.mp3...</span>';
+            
+            try {
+                if (typeof playAudio === 'function') {
+                    playAudio('correct');
+                    resultDiv.innerHTML = '<span style="color: #28a745;">✅ TrueAnswer.mp3 reproducido correctamente</span>';
+                    console.log('✅ TrueAnswer.mp3 reproducido');
+                } else {
+                    resultDiv.innerHTML = '<span style="color: #dc3545;">❌ Función playAudio no disponible</span>';
+                    console.error('❌ Función playAudio no disponible');
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span style="color: #dc3545;">❌ Error: ${error.message}</span>`;
+                console.error('❌ Error reproduciendo TrueAnswer.mp3:', error);
+            }
+        }
+        
+        // Función para probar Congrats.mp3
+        function testCongrats() {
+            console.log('🎉 Probando audio Congrats.mp3...');
+            const resultDiv = document.getElementById('test-result');
+            resultDiv.innerHTML = '<span style="color: #ffc107;">🔄 Probando Congrats.mp3...</span>';
+            
+            try {
+                if (typeof playAudio === 'function') {
+                    playAudio('congrats');
+                    resultDiv.innerHTML = '<span style="color: #28a745;">✅ Congrats.mp3 reproducido correctamente</span>';
+                    console.log('✅ Congrats.mp3 reproducido');
+                } else {
+                    resultDiv.innerHTML = '<span style="color: #dc3545;">❌ Función playAudio no disponible</span>';
+                    console.error('❌ Función playAudio no disponible');
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span style="color: #dc3545;">❌ Error: ${error.message}</span>`;
+                console.error('❌ Error reproduciendo Congrats.mp3:', error);
+            }
+        }
+        
+        // Función para probar todos los audios
+        function testAllAudios() {
+            console.log('🔄 Probando todos los audios...');
+            const resultDiv = document.getElementById('test-result');
+            resultDiv.innerHTML = '<span style="color: #ffc107;">🔄 Probando todos los audios...</span>';
+            
+            // Probar WrongAnswer.mp3 primero
+            testWrongAnswer();
+            
+            // Probar TrueAnswer.mp3 después de 1 segundo
+            setTimeout(() => {
+                testTrueAnswer();
+            }, 1000);
+            
+            // Probar Congrats.mp3 después de 2 segundos
+            setTimeout(() => {
+                testCongrats();
+                resultDiv.innerHTML = '<span style="color: #28a745;">✅ Todos los audios probados</span>';
+            }, 2000);
+        }
+        
+        // Verificar configuración al cargar
+        window.onload = function() {
+            console.log('🚀 Página de prueba de WrongAnswer cargada');
+            
+            const configStatus = document.getElementById('config-status');
+            
+            if (typeof GAME_CONFIG === 'undefined') {
+                configStatus.innerHTML = '<span style="color: #dc3545;">❌ GAME_CONFIG no está definido</span>';
+                return;
+            }
+            
+            if (typeof playAudio === 'undefined') {
+                configStatus.innerHTML = '<span style="color: #dc3545;">❌ Función playAudio no está disponible</span>';
+                return;
+            }
+            
+            configStatus.innerHTML = `
+                <span style="color: #28a745;">✅ Configuración cargada correctamente</span><br>
+                <strong>Audio WrongAnswer:</strong> ${GAME_CONFIG.AUDIO.WRONG_ANSWER}<br>
+                <strong>Audio TrueAnswer:</strong> ${GAME_CONFIG.AUDIO.TRUE_ANSWER}<br>
+                <strong>Audio Congrats:</strong> ${GAME_CONFIG.AUDIO.CONGRATS}
+            `;
+            
+            console.log('✅ Configuración verificada');
+            console.log('GAME_CONFIG:', GAME_CONFIG);
+            console.log('Función playAudio:', typeof playAudio);
+            console.log('Ruta WrongAnswer:', GAME_CONFIG.AUDIO.WRONG_ANSWER);
+        };
+    </script>
+</body>
+</html>

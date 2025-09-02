@@ -1,5 +1,5 @@
-// Configuración del juego
-const BOARD_SIZE = 15;
+// Configuración del juego usando el archivo de configuración centralizada
+const BOARD_SIZE = GAME_CONFIG.GAME.BOARD_SIZE;
 const LETTER_DISTRIBUTION = {
     'A': { count: 12, value: 1 },
     'B': { count: 2, value: 3 },
@@ -29,7 +29,7 @@ const LETTER_DISTRIBUTION = {
     '': { count: 2, value: 0 } // Comodines
 };
 
-const RACK_SIZE = 7;
+const RACK_SIZE = GAME_CONFIG.GAME.RACK_SIZE;
 
 // Preguntas del juego
 const QUESTIONS = [
@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Detectar si es un dispositivo móvil
     function isMobileDevice() {
         return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-               (window.innerWidth <= 768);
+               (window.innerWidth <= GAME_CONFIG.UI.MOBILE_BREAKPOINT);
     }
 
     // Mostrar/ocultar mensaje de ayuda móvil
@@ -270,5 +270,5 @@ document.addEventListener('DOMContentLoaded', function() {
         tiles.forEach((tile, index) => {
             console.log(`Ficha ${index}:`, tile.dataset.index, 'touchstart:', tile.ontouchstart !== undefined);
         });
-    }, 2000);
+    }, GAME_CONFIG.UI.ANIMATION_DURATION * 2);
 }); 

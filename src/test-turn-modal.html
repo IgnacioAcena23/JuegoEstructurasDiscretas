@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Ventana del Turno</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        button {
+            background: #6f42c1;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #5a32a3;
+        }
+        .status {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .warning { color: #ffc107; }
+        
+        /* Estilos del turn modal */
+        .turn-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1002;
+            opacity: 0;
+            visibility: hidden;
+            transform: translate(-50%, -50%) scale(0.8);
+            transition: all 0.5s ease;
+        }
+        
+        .turn-modal.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        .turn-modal.hiding {
+            opacity: 0;
+            visibility: hidden;
+            transform: translate(-50%, -50%) scale(0.8);
+        }
+        
+        .turn-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 30px 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 3px solid #6f42c1;
+            min-width: 300px;
+            transition: all 0.3s ease;
+        }
+        
+        .turn-text {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .turn-player {
+            font-size: 2em;
+            font-weight: bold;
+            color: #6f42c1;
+            text-shadow: 1px 1px 2px rgba(111, 66, 193, 0.2);
+            transition: color 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Prueba de Ventana del Turno</h1>
+        <p>Esta página te permite probar la ventana emergente que indica a qué jugador le toca el turno.</p>
+        
+        <div class="status">
+            <h3>Estado de la Configuración:</h3>
+            <div id="config-status">Verificando...</div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🎮 Pruebas de Turno</h3>
+            <button onclick="testTurnModal()">🎯 Probar Ventana del Turno</button>
+            <button onclick="testPlayer1()">👤 Mostrar Turno Jugador 1</button>
+            <button onclick="testPlayer2()">👤 Mostrar Turno Jugador 2</button>
+            <button onclick="testTurnSequence()">🔄 Secuencia de Turnos</button>
+            
+            <div id="test-result"></div>
+        </div>
+        
+        <div class="log">
+            <strong>Logs de Consola:</strong>
+            <div id="log-content">
+                Los logs aparecerán aquí...
+            </div>
+        </div>
+    </div>
+    
+    <!-- Ventana emergente del turno del jugador -->
+    <div class="turn-modal" id="turn-modal">
+        <div class="turn-container">
+            <div class="turn-text">Turno del</div>
+            <div class="turn-player" id="turn-player-name">Jugador 1</div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="javaScript/config.js"></script>
+    
+    <script>
+        // Simular estado del juego para las pruebas
+        const gameState = {
+            currentPlayer: 0 // 0 = Jugador 1, 1 = Jugador 2
+        };
+        
+        // Función para agregar logs a la interfaz
+        function addLog(message, type = 'log') {
+            const logContent = document.getElementById('log-content');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'warn' ? 'warning' : 'success';
+            logContent.innerHTML += `<span class="${className}">[${timestamp}] ${message}</span><br>`;
+            logContent.scrollTop = logContent.scrollHeight;
+        }
+        
+        // Interceptar console.log para mostrar en la interfaz
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addLog('LOG: ' + args.join(' '), 'log');
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addLog('ERROR: ' + args.join(' '), 'error');
+        };
+        
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            addLog('WARN: ' + args.join(' '), 'warn');
+        };
+        
+        // Función para mostrar la ventana emergente del turno
+        function showTurnModal() {
+            const turnModal = document.getElementById('turn-modal');
+            const turnPlayerName = document.getElementById('turn-player-name');
+            
+            // Limpiar clases anteriores
+            turnModal.classList.remove('show', 'hiding');
+            
+            // Actualizar el nombre del jugador
+            const playerName = gameState.currentPlayer === 0 ? 'Jugador 1' : 'Jugador 2';
+            turnPlayerName.textContent = playerName;
+            
+            // Mostrar la ventana
+            turnModal.classList.add('show');
+            console.log('🎯 Mostrando ventana del turno para:', playerName);
+            
+            // Ocultar automáticamente después de 1.5 segundos
+            setTimeout(() => {
+                turnModal.classList.add('hiding');
+                console.log('🔄 Ocultando ventana del turno');
+            }, 1500);
+        }
+        
+        // Función para probar la ventana del turno
+        function testTurnModal() {
+            console.log('🎯 Probando ventana del turno...');
+            const resultDiv = document.getElementById('test-result');
+            resultDiv.innerHTML = '<span style="color: #6f42c1;">🔄 Probando ventana del turno...</span>';
+            
+            try {
+                showTurnModal();
+                resultDiv.innerHTML = '<span style="color: #28a745;">✅ Ventana del turno mostrada correctamente</span>';
+                console.log('✅ Ventana del turno probada');
+            } catch (error) {
+                resultDiv.innerHTML = `<span style="color: #dc3545;">❌ Error: ${error.message}</span>`;
+                console.error('❌ Error mostrando ventana del turno:', error);
+            }
+        }
+        
+        // Función para probar turno del jugador 1
+        function testPlayer1() {
+            console.log('👤 Probando turno del Jugador 1...');
+            gameState.currentPlayer = 0;
+            showTurnModal();
+        }
+        
+        // Función para probar turno del jugador 2
+        function testPlayer2() {
+            console.log('👤 Probando turno del Jugador 2...');
+            gameState.currentPlayer = 1;
+            showTurnModal();
+        }
+        
+        // Función para probar secuencia de turnos
+        function testTurnSequence() {
+            console.log('🔄 Probando secuencia de turnos...');
+            const resultDiv = document.getElementById('test-result');
+            resultDiv.innerHTML = '<span style="color: #ffc107;">🔄 Probando secuencia de turnos...</span>';
+            
+            // Mostrar turno del jugador 1
+            gameState.currentPlayer = 0;
+            showTurnModal();
+            
+            // Mostrar turno del jugador 2 después de 2 segundos
+            setTimeout(() => {
+                gameState.currentPlayer = 1;
+                showTurnModal();
+            }, 2000);
+            
+            // Mostrar turno del jugador 1 después de 4 segundos
+            setTimeout(() => {
+                gameState.currentPlayer = 0;
+                showTurnModal();
+                resultDiv.innerHTML = '<span style="color: #28a745;">✅ Secuencia de turnos completada</span>';
+            }, 4000);
+        }
+        
+        // Verificar configuración al cargar
+        window.onload = function() {
+            console.log('🚀 Página de prueba de ventana del turno cargada');
+            
+            const configStatus = document.getElementById('config-status');
+            
+            if (typeof GAME_CONFIG === 'undefined') {
+                configStatus.innerHTML = '<span style="color: #dc3545;">❌ GAME_CONFIG no está definido</span>';
+                return;
+            }
+            
+            configStatus.innerHTML = `
+                <span style="color: #28a745;">✅ Configuración cargada correctamente</span><br>
+                <strong>Estado del juego:</strong> Simulado para pruebas<br>
+                <strong>Jugador actual:</strong> ${gameState.currentPlayer === 0 ? 'Jugador 1' : 'Jugador 2'}
+            `;
+            
+            console.log('✅ Configuración verificada');
+            console.log('Estado del juego simulado:', gameState);
+        };
+    </script>
+</body>
+</html>

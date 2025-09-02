@@ -19,6 +19,16 @@ body {
     text-align: center;
     margin-bottom: 20px;
     color: white;
+    transition: all 0.3s ease;
+}
+
+/* Header según el jugador activo */
+.player.player1-active ~ .header h1 {
+    text-shadow: 2px 2px 4px rgba(52, 152, 219, 0.5);
+}
+
+.player.player2-active ~ .header h1 {
+    text-shadow: 2px 2px 4px rgba(231, 76, 60, 0.5);
 }
 
 .header h1 {
@@ -60,6 +70,118 @@ body {
     font-size: 20px;
 }
 
+/* Ventana emergente del turno del jugador */
+.turn-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1002;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, -50%) scale(0.8);
+    transition: all 0.5s ease;
+}
+
+.turn-modal.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.turn-modal.hiding {
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, -50%) scale(0.8);
+}
+
+.turn-container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(15px);
+    padding: 30px 40px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    border: 3px solid #6f42c1;
+    min-width: 300px;
+    transition: all 0.3s ease;
+}
+
+/* Colores del modal según el jugador activo */
+.player.player1-active ~ .turn-modal .turn-container {
+    border-color: #3498db;
+    box-shadow: 0 20px 60px rgba(52, 152, 219, 0.4);
+}
+
+.player.player2-active ~ .turn-modal .turn-container {
+    border-color: #e74c3c;
+    box-shadow: 0 20px 60px rgba(231, 76, 60, 0.4);
+}
+
+
+
+.turn-text {
+    font-size: 1.2em;
+    color: #666;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.turn-player {
+    font-size: 2em;
+    font-weight: bold;
+    color: #6f42c1;
+    text-shadow: 1px 1px 2px rgba(111, 66, 193, 0.2);
+    transition: color 0.3s ease;
+}
+
+/* Colores del nombre del jugador según el jugador activo */
+.player.player1-active ~ .turn-modal .turn-player {
+    color: #3498db;
+    text-shadow: 1px 1px 2px rgba(52, 152, 219, 0.2);
+}
+
+.player.player2-active ~ .turn-modal .turn-player {
+    color: #e74c3c;
+    text-shadow: 1px 1px 2px rgba(231, 76, 60, 0.2);
+}
+
+
+
+
+
+/* Estilos responsivos para la ventana del turno */
+@media (max-width: 768px) {
+    .turn-container {
+        padding: 25px 30px;
+        min-width: 280px;
+        margin: 20px;
+    }
+    
+    .turn-text {
+        font-size: 1.1em;
+    }
+    
+    .turn-player {
+        font-size: 1.8em;
+    }
+}
+
+@media (max-width: 480px) {
+    .turn-container {
+        padding: 20px 25px;
+        min-width: 250px;
+    }
+    
+    .turn-text {
+        font-size: 1em;
+    }
+    
+    .turn-player {
+        font-size: 1.5em;
+    }
+}
+
 /* Mensaje de ayuda para móviles */
 .mobile-help {
     background: rgba(255, 255, 255, 0.95);
@@ -72,6 +194,18 @@ body {
     border: 2px solid #3498db;
     color: #2c3e50;
     font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+/* Mensaje de ayuda móvil según el jugador activo */
+.player.player1-active ~ .mobile-help {
+    border-color: #3498db;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+}
+
+.player.player2-active ~ .mobile-help {
+    border-color: #e74c3c;
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
 }
 
 .mobile-help p {
@@ -92,6 +226,16 @@ body {
     gap: 20px;
     max-width: 1200px;
     width: 100%;
+    transition: all 0.3s ease;
+}
+
+/* Contenedor del juego según el jugador activo */
+.player.player1-active ~ .game-container {
+    filter: drop-shadow(0 0 20px rgba(52, 152, 219, 0.1));
+}
+
+.player.player2-active ~ .game-container {
+    filter: drop-shadow(0 0 20px rgba(231, 76, 60, 0.1));
 }
 
 .score-board {
@@ -103,6 +247,16 @@ body {
     border-radius: 15px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.1);
     backdrop-filter: blur(10px);
+    transition: box-shadow 0.3s ease;
+}
+
+/* Tablero de puntuación según el jugador activo */
+.player.player1-active ~ .score-board {
+    box-shadow: 0 8px 32px rgba(52, 152, 219, 0.2);
+}
+
+.player.player2-active ~ .score-board {
+    box-shadow: 0 8px 32px rgba(231, 76, 60, 0.2);
 }
 
 .player {
@@ -118,6 +272,17 @@ body {
     background: linear-gradient(45deg, #ffd700, #ffed4e);
     transform: scale(1.05);
     box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+}
+
+/* Colores específicos por jugador */
+.player.player1-active {
+    background: linear-gradient(45deg, #3498db, #5dade2);
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+}
+
+.player.player2-active {
+    background: linear-gradient(45deg, #e74c3c, #ec7063);
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
 }
 
 .player-name {
@@ -141,6 +306,16 @@ body {
     padding: 8px;
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s ease;
+}
+
+/* Tablero según el jugador activo */
+.player.player1-active ~ .board {
+    box-shadow: 0 10px 30px rgba(52, 152, 219, 0.3);
+}
+
+.player.player2-active ~ .board {
+    box-shadow: 0 10px 30px rgba(231, 76, 60, 0.3);
 }
 
 .cell {
@@ -292,6 +467,16 @@ body {
     width: 70%;
     justify-content: center;
     box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    transition: box-shadow 0.3s ease;
+}
+
+/* Rack según el jugador activo */
+.player.player1-active ~ .rack {
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+}
+
+.player.player2-active ~ .rack {
+    box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
 }
 
 .controls {
@@ -310,6 +495,16 @@ body {
     border-radius: 15px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.1);
     backdrop-filter: blur(10px);
+    transition: box-shadow 0.3s ease;
+}
+
+/* Controles según el jugador activo */
+.player.player1-active ~ .controls-sidebar .controls {
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.2);
+}
+
+.player.player2-active ~ .controls-sidebar .controls {
+    box-shadow: 0 8px 25px rgba(231, 76, 60, 0.2);
 }
 
 .controls-sidebar .controls button {
@@ -338,6 +533,7 @@ button {
 .btn-primary {
     background: linear-gradient(45deg, #2ecc71, #27ae60);
     color: white;
+    transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
@@ -345,9 +541,27 @@ button {
     box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
 }
 
+/* Botones según el jugador activo */
+.player.player1-active ~ .game-controls .btn-primary {
+    background: linear-gradient(45deg, #3498db, #2980b9);
+}
+
+.player.player1-active ~ .game-controls .btn-primary:hover {
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+}
+
+.player.player2-active ~ .game-controls .btn-primary {
+    background: linear-gradient(45deg, #e74c3c, #c0392b);
+}
+
+.player.player2-active ~ .game-controls .btn-primary:hover {
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+}
+
 .btn-secondary {
     background: linear-gradient(45deg, #e67e22, #d35400);
     color: white;
+    transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
@@ -355,14 +569,51 @@ button {
     box-shadow: 0 5px 15px rgba(230, 126, 34, 0.4);
 }
 
+/* Botón secundario según el jugador activo */
+.player.player1-active ~ .game-controls .btn-secondary {
+    background: linear-gradient(45deg, #3498db, #2980b9);
+}
+
+.player.player1-active ~ .game-controls .btn-secondary:hover {
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+}
+
+.player.player2-active ~ .game-controls .btn-secondary {
+    background: linear-gradient(45deg, #e74c3c, #c0392b);
+}
+
+.player.player2-active ~ .game-controls .btn-secondary:hover {
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+}
+
 .btn-info {
     background: linear-gradient(45deg, #3498db, #2980b9);
     color: white;
+    transition: all 0.3s ease;
 }
 
 .btn-info:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+}
+
+/* Botón de información según el jugador activo */
+.player.player1-active ~ .header .instructions-btn {
+    background: linear-gradient(45deg, #3498db, #2980b9);
+    border-color: #3498db;
+}
+
+.player.player1-active ~ .header .instructions-btn:hover {
+    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+}
+
+.player.player2-active ~ .header .instructions-btn {
+    background: linear-gradient(45deg, #e74c3c, #c0392b);
+    border-color: #e74c3c;
+}
+
+.player.player2-active ~ .header .instructions-btn:hover {
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
 }
 
 button:disabled {
@@ -526,6 +777,25 @@ button:disabled {
     border-color: #e74c3c;
 }
 
+/* Botón de leyenda según el jugador activo */
+.player.player1-active ~ .game-info .legend-toggle {
+    border-color: #3498db;
+    color: #3498db;
+}
+
+.player.player1-active ~ .game-info .legend-toggle:hover {
+    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+}
+
+.player.player2-active ~ .game-info .legend-toggle {
+    border-color: #e74c3c;
+    color: #e74c3c;
+}
+
+.player.player2-active ~ .game-info .legend-toggle:hover {
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+}
+
 .legend {
     display: none;
     flex-direction: column;
@@ -619,6 +889,25 @@ button:disabled {
     z-index: 1000;
     justify-content: center;
     align-items: center;
+    transition: background 0.3s ease;
+}
+
+/* Fondo del modal según el jugador */
+.question-modal.player1-question {
+    background: rgba(52, 152, 219, 0.9);
+}
+
+.question-modal.player2-question {
+    background: rgba(231, 76, 60, 0.9);
+}
+
+/* Fondo del modal de preguntas según el jugador activo (cuando no hay pregunta específica) */
+.player.player1-active ~ .question-modal:not(.player1-question):not(.player2-question) {
+    background: rgba(52, 152, 219, 0.9);
+}
+
+.player.player2-active ~ .question-modal:not(.player1-question):not(.player2-question) {
+    background: rgba(231, 76, 60, 0.9);
 }
 
 .question-modal.show {
@@ -635,6 +924,18 @@ button:disabled {
     box-shadow: 0 20px 60px rgba(75, 0, 130, 0.4);
     animation: modalSlideIn 0.3s ease;
     border: 3px solid #6f42c1;
+    transition: all 0.3s ease;
+}
+
+/* Colores del modal según el jugador */
+.question-modal.player1-question .question-container {
+    border-color: #3498db;
+    box-shadow: 0 20px 60px rgba(52, 152, 219, 0.4);
+}
+
+.question-modal.player2-question .question-container {
+    border-color: #e74c3c;
+    box-shadow: 0 20px 60px rgba(231, 76, 60, 0.4);
 }
 
 @keyframes modalSlideIn {
@@ -650,15 +951,27 @@ button:disabled {
 
 .question-title {
     font-size: 1.5em;
-    color: #6f42c1;
+    color: #000000;
     margin-bottom: 20px;
     font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(111, 66, 193, 0.2);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    transition: color 0.3s ease;
+}
+
+/* Colores del título según el jugador */
+.question-modal.player1-question .question-title {
+    color: #000000;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.question-modal.player2-question .question-title {
+    color: #000000;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .question-text {
     font-size: 1.2em;
-    color: #495057;
+    color: #000000;
     margin-bottom: 25px;
     line-height: 1.5;
     font-weight: 500;
@@ -675,7 +988,7 @@ button:disabled {
     border: 2px solid #6f42c1;
     border-radius: 10px;
     background: linear-gradient(145deg, #ffffff, #f8f9fa);
-    color: #6f42c1;
+    color: #000000;
     font-size: 1.1em;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -683,12 +996,40 @@ button:disabled {
     box-shadow: 0 2px 8px rgba(111, 66, 193, 0.1);
 }
 
+/* Colores de las opciones según el jugador */
+.question-modal.player1-question .question-option {
+    border-color: #3498db;
+    color: #000000;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.1);
+}
+
+.question-modal.player2-question .question-option {
+    border-color: #e74c3c;
+    color: #000000;
+    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.1);
+}
+
 .question-option:hover {
     background: linear-gradient(45deg, #6f42c1, #8e44ad);
-    color: white;
+    color: #000000;
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(111, 66, 193, 0.4);
     border-color: #8e44ad;
+}
+
+/* Hover de las opciones según el jugador */
+.question-modal.player1-question .question-option:hover {
+    background: linear-gradient(45deg, #70bdf0, #5dade2);
+    color: #000000;
+    border-color: #5dade2;
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+}
+
+.question-modal.player2-question .question-option:hover {
+    background: linear-gradient(45deg, #ff6655, #ec7063);
+    color: #000000;
+    border-color: #ec7063;
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
 }
 
 .question-option.correct {
@@ -727,6 +1068,17 @@ button:disabled {
     box-shadow: 0 2px 8px rgba(220, 53, 69, 0.2);
 }
 
+/* Resultados de preguntas según el jugador */
+.question-modal.player1-question .question-result.correct {
+    border-color: #3498db;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2);
+}
+
+.question-modal.player2-question .question-result.correct {
+    border-color: #e74c3c;
+    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.2);
+}
+
 .question-continue {
     background: linear-gradient(45deg, #6f42c1, #8e44ad);
     color: white;
@@ -746,6 +1098,27 @@ button:disabled {
     background: linear-gradient(45deg, #8e44ad, #9b59b6);
 }
 
+/* Botón de continuar según el jugador */
+.question-modal.player1-question .question-continue {
+    background: linear-gradient(45deg, #3498db, #5dade2);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.question-modal.player1-question .question-continue:hover {
+    background: linear-gradient(45deg, #5dade2, #85c1ee);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.5);
+}
+
+.question-modal.player2-question .question-continue {
+    background: linear-gradient(45deg, #e74c3c, #ec7063);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+.question-modal.player2-question .question-continue:hover {
+    background: linear-gradient(45deg, #ec7063, #f1948a);
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.5);
+}
+
 /* Modal de victoria */
 .victory-modal {
     display: none;
@@ -758,6 +1131,25 @@ button:disabled {
     z-index: 2000;
     justify-content: center;
     align-items: center;
+    transition: background 0.3s ease;
+}
+
+/* Fondo del modal de victoria según el jugador activo */
+.player.player1-active ~ .victory-modal {
+    background: rgba(52, 152, 219, 0.8);
+}
+
+.player.player2-active ~ .victory-modal {
+    background: rgba(231, 76, 60, 0.8);
+}
+
+/* Fondo del modal de victoria según el jugador activo (cuando no hay pregunta específica) */
+.player.player1-active ~ .victory-modal:not(.player1-question):not(.player2-question) {
+    background: rgba(52, 152, 219, 0.8);
+}
+
+.player.player2-active ~ .victory-modal:not(.player1-question):not(.player2-question) {
+    background: rgba(231, 76, 60, 0.8);
 }
 
 .victory-modal.show {
@@ -776,6 +1168,20 @@ button:disabled {
     border: 4px solid #ff8c00;
     position: relative;
     overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Modal de victoria según el jugador activo */
+.player.player1-active ~ .victory-modal .victory-container {
+    background: linear-gradient(135deg, #3498db, #5dade2);
+    border-color: #2980b9;
+    box-shadow: 0 25px 80px rgba(52, 152, 219, 0.4);
+}
+
+.player.player2-active ~ .victory-modal .victory-container {
+    background: linear-gradient(135deg, #e74c3c, #ec7063);
+    border-color: #c0392b;
+    box-shadow: 0 25px 80px rgba(231, 76, 60, 0.4);
 }
 
 .victory-container::before {
@@ -813,6 +1219,16 @@ button:disabled {
     font-size: 4em;
     margin-bottom: 20px;
     animation: victoryBounce 1s ease infinite alternate;
+    transition: color 0.3s ease;
+}
+
+/* Icono de victoria según el jugador */
+.player.player1-active ~ .victory-modal .victory-icon {
+    color: #2980b9;
+}
+
+.player.player2-active ~ .victory-modal .victory-icon {
+    color: #c0392b;
 }
 
 @keyframes victoryBounce {
@@ -830,6 +1246,7 @@ button:disabled {
     margin-bottom: 15px;
     font-weight: bold;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    transition: color 0.3s ease;
 }
 
 .victory-text {
@@ -838,6 +1255,26 @@ button:disabled {
     margin-bottom: 30px;
     line-height: 1.4;
     font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+/* Título y texto del modal de victoria según el jugador */
+.player.player1-active ~ .victory-modal .victory-title {
+    color: #1a252f;
+    text-shadow: 2px 2px 4px rgba(52, 152, 219, 0.3);
+}
+
+.player.player1-active ~ .victory-modal .victory-text {
+    color: #2c3e50;
+}
+
+.player.player2-active ~ .victory-modal .victory-title {
+    color: #1a252f;
+    text-shadow: 2px 2px 4px rgba(231, 76, 60, 0.3);
+}
+
+.player.player2-active ~ .victory-modal .victory-text {
+    color: #2c3e50;
 }
 
 .victory-button {
@@ -861,6 +1298,27 @@ button:disabled {
     background: linear-gradient(45deg, #27ae60, #229954);
 }
 
+/* Botón de victoria según el jugador activo */
+.player.player1-active ~ .victory-modal .victory-button {
+    background: linear-gradient(45deg, #3498db, #2980b9);
+    box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
+}
+
+.player.player1-active ~ .victory-modal .victory-button:hover {
+    background: linear-gradient(45deg, #2980b9, #1f4e79);
+    box-shadow: 0 12px 25px rgba(52, 152, 219, 0.6);
+}
+
+.player.player2-active ~ .victory-modal .victory-button {
+    background: linear-gradient(45deg, #e74c3c, #c0392b);
+    box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
+}
+
+.player.player2-active ~ .victory-modal .victory-button:hover {
+    background: linear-gradient(45deg, #c0392b, #a93226);
+    box-shadow: 0 12px 25px rgba(231, 76, 60, 0.6);
+}
+
 /* Modal de selección de categorías */
 .category-modal {
     position: fixed;
@@ -876,6 +1334,24 @@ button:disabled {
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
+}
+
+/* Fondo del modal de categorías según el jugador activo */
+.player.player1-active ~ .category-modal {
+    background: rgba(52, 152, 219, 0.8);
+}
+
+.player.player2-active ~ .category-modal {
+    background: rgba(231, 76, 60, 0.8);
+}
+
+/* Fondo del modal de categorías según el jugador activo (cuando no hay pregunta específica) */
+.player.player1-active ~ .category-modal:not(.player1-question):not(.player2-question) {
+    background: rgba(52, 152, 219, 0.8);
+}
+
+.player.player2-active ~ .category-modal:not(.player1-question):not(.player2-question) {
+    background: rgba(231, 76, 60, 0.8);
 }
 
 .category-modal.show {
@@ -895,6 +1371,17 @@ button:disabled {
     transition: transform 0.3s ease;
 }
 
+/* Modal de categorías según el jugador activo */
+.player.player1-active ~ .category-modal .category-container {
+    background: linear-gradient(135deg, #3498db 0%, #5dade2 100%);
+    box-shadow: 0 20px 60px rgba(52, 152, 219, 0.3);
+}
+
+.player.player2-active ~ .category-modal .category-container {
+    background: linear-gradient(135deg, #e74c3c 0%, #ec7063 100%);
+    box-shadow: 0 20px 60px rgba(231, 76, 60, 0.3);
+}
+
 .category-modal.show .category-container {
     transform: scale(1);
 }
@@ -905,6 +1392,16 @@ button:disabled {
     margin-bottom: 10px;
     font-weight: bold;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    transition: text-shadow 0.3s ease;
+}
+
+/* Título del modal de categorías según el jugador */
+.player.player1-active ~ .category-modal .category-title {
+    text-shadow: 2px 2px 4px rgba(52, 152, 219, 0.5);
+}
+
+.player.player2-active ~ .category-modal .category-title {
+    text-shadow: 2px 2px 4px rgba(231, 76, 60, 0.5);
 }
 
 .category-subtitle {
@@ -939,8 +1436,17 @@ button:disabled {
 
 .category-option:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    background: rgba(255, 255, 255, 1);
+}
+
+/* Opciones de categoría según el jugador */
+.player.player1-active ~ .category-modal .category-option:hover {
+    box-shadow: 0 12px 35px rgba(52, 152, 219, 0.2);
+    border: 2px solid #3498db;
+}
+
+.player.player2-active ~ .category-modal .category-option:hover {
+    box-shadow: 0 12px 35px rgba(231, 76, 60, 0.2);
+    border: 2px solid #e74c3c;
 }
 
 .category-option:active {
@@ -950,6 +1456,16 @@ button:disabled {
 .category-icon {
     font-size: 3em;
     margin-bottom: 15px;
+    transition: color 0.3s ease;
+}
+
+/* Iconos de categoría según el jugador */
+.player.player1-active ~ .category-modal .category-option:hover .category-icon {
+    color: #3498db;
+}
+
+.player.player2-active ~ .category-modal .category-option:hover .category-icon {
+    color: #e74c3c;
 }
 
 .category-name {
@@ -958,6 +1474,16 @@ button:disabled {
     color: #2c3e50;
     margin-bottom: 10px;
     text-align: center;
+    transition: color 0.3s ease;
+}
+
+/* Nombres de categoría según el jugador */
+.player.player1-active ~ .category-modal .category-option:hover .category-name {
+    color: #3498db;
+}
+
+.player.player2-active ~ .category-modal .category-option:hover .category-name {
+    color: #e74c3c;
 }
 
 .category-description {
@@ -965,6 +1491,16 @@ button:disabled {
     color: #7f8c8d;
     line-height: 1.4;
     text-align: center;
+    transition: color 0.3s ease;
+}
+
+/* Descripciones de categoría según el jugador */
+.player.player1-active ~ .category-modal .category-option:hover .category-description {
+    color: #5dade2;
+}
+
+.player.player2-active ~ .category-modal .category-option:hover .category-description {
+    color: #ec7063;
 }
 
 @media (max-width: 768px) {
@@ -1159,6 +1695,25 @@ button:disabled {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
+    transition: background-color 0.3s ease;
+}
+
+/* Fondo del modal de instrucciones según el jugador activo */
+.player.player1-active ~ .instructions-modal {
+    background-color: rgba(52, 152, 219, 0.5);
+}
+
+.player.player2-active ~ .instructions-modal {
+    background-color: rgba(231, 76, 60, 0.5);
+}
+
+/* Fondo del modal de instrucciones según el jugador activo (cuando no hay pregunta específica) */
+.player.player1-active ~ .instructions-modal:not(.player1-question):not(.player2-question) {
+    background-color: rgba(52, 152, 219, 0.5);
+}
+
+.player.player2-active ~ .instructions-modal:not(.player1-question):not(.player2-question) {
+    background-color: rgba(231, 76, 60, 0.5);
 }
 
 .instructions-container {
@@ -1172,6 +1727,16 @@ button:disabled {
     overflow-y: auto;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     animation: slideInInstructions 0.3s ease;
+    transition: box-shadow 0.3s ease;
+}
+
+/* Contenedor de instrucciones según el jugador */
+.player.player1-active ~ .instructions-modal .instructions-container {
+    box-shadow: 0 20px 60px rgba(52, 152, 219, 0.3);
+}
+
+.player.player2-active ~ .instructions-modal .instructions-container {
+    box-shadow: 0 20px 60px rgba(231, 76, 60, 0.3);
 }
 
 @keyframes slideInInstructions {
@@ -1196,6 +1761,16 @@ button:disabled {
     position: sticky;
     top: 0;
     z-index: 10;
+    transition: background 0.3s ease;
+}
+
+/* Header del modal de instrucciones según el jugador activo */
+.player.player1-active ~ .instructions-modal .instructions-header {
+    background: linear-gradient(135deg, #3498db 0%, #5dade2 100%);
+}
+
+.player.player2-active ~ .instructions-modal .instructions-header {
+    background: linear-gradient(135deg, #e74c3c 0%, #ec7063 100%);
 }
 
 .instructions-header h2 {
@@ -1224,6 +1799,15 @@ button:disabled {
     transform: scale(1.1);
 }
 
+/* Botón de cerrar instrucciones según el jugador */
+.player.player1-active ~ .instructions-modal .close-btn:hover {
+    border-color: #3498db;
+}
+
+.player.player2-active ~ .instructions-modal .close-btn:hover {
+    border-color: #e74c3c;
+}
+
 .instructions-content {
     padding: 30px;
     line-height: 1.6;
@@ -1239,6 +1823,16 @@ button:disabled {
     margin-bottom: 15px;
     border-bottom: 2px solid #3498db;
     padding-bottom: 8px;
+    transition: border-color 0.3s ease;
+}
+
+/* Títulos de secciones de instrucciones según el jugador */
+.player.player1-active ~ .instructions-modal .instructions-section h3 {
+    border-bottom-color: #3498db;
+}
+
+.player.player2-active ~ .instructions-modal .instructions-section h3 {
+    border-bottom-color: #e74c3c;
 }
 
 .instructions-section h4 {

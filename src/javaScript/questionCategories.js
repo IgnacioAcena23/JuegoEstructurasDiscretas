@@ -292,7 +292,7 @@ const PERMUTACIONES_QUESTIONS = [
     },
     {
         question: "En una carrera hay 8 corredores. ¿De cuántas maneras se pueden otorgar los tres primeros lugares (oro, plata y bronce)?",
-        options: ["83=512", "P(8,3)=336", "C(8,3)=56", "3!=6"],
+        options: ["8^3=512", "P(8,3)=336", "C(8,3)=56", "3!=6"],
         correct: 1
     },
     {

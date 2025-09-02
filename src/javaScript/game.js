@@ -75,7 +75,7 @@ questionContinue.addEventListener('click', () => {
         // Ocultar mensaje después de un tiempo
         setTimeout(() => {
             messageElement.classList.add('hidden');
-        }, 3000);
+        }, GAME_CONFIG.UI.MESSAGE_DISPLAY_TIME);
     }
 });
 
@@ -657,6 +657,12 @@ function handleDrop(e) {
                 value: sourceTile.value
             });
             
+            // Reproducir audio de colocación de pieza
+            if (typeof playAudio === 'function') {
+                playAudio('put_piece');
+                console.log('🎵 Audio de colocación de pieza reproducido (devolución al rack)');
+            }
+            
             // Actualizar la visualización
             updateBoard();
             updateRack();
@@ -673,6 +679,12 @@ function handleDrop(e) {
             // Mover la ficha a la nueva posición
             gameState.board[row][col] = sourceTile;
             gameState.board[sourceRow][sourceCol] = null;
+            
+            // Reproducir audio de colocación de pieza
+            if (typeof playAudio === 'function') {
+                playAudio('put_piece');
+                console.log('🎵 Audio de colocación de pieza reproducido (movimiento en tablero)');
+            }
             
             // Actualizar la visualización
             updateBoard();
@@ -698,6 +710,12 @@ function handleDrop(e) {
         
         // Añadir a las fichas seleccionadas en este turno
         gameState.selectedTiles.push({ row, col, tileIndex });
+        
+        // Reproducir audio de colocación de pieza
+        if (typeof playAudio === 'function') {
+            playAudio('put_piece');
+            console.log('🎵 Audio de colocación de pieza reproducido (colocación desde rack)');
+        }
         
         // Remover la ficha del rack
         currentPlayerRack.splice(tileIndex, 1);
@@ -780,13 +798,22 @@ function updateGameInfo() {
 }
 
 function setActivePlayer() {
+    // Remover todas las clases de color y activo
+    player1Element.classList.remove('active', 'player1-active');
+    player2Element.classList.remove('active', 'player2-active');
+    
     if (gameState.currentPlayer === 0) {
-        player1Element.classList.add('active');
+        // Jugador 1: Azul
+        player1Element.classList.add('active', 'player1-active');
         player2Element.classList.remove('active');
     } else {
+        // Jugador 2: Rojo
+        player2Element.classList.add('active', 'player2-active');
         player1Element.classList.remove('active');
-        player2Element.classList.add('active');
     }
+    
+    // Mostrar ventana emergente del turno
+    showTurnModal();
 }
 
 function showMessage(text, type) {
@@ -841,6 +868,17 @@ function showQuestion(playerIndex) {
     questionTitle.textContent = `Pregunta para ${playerName}`;
     questionText.textContent = question.question;
     
+    // Aplicar colores según el jugador
+    if (playerIndex === 0) {
+        // Jugador 1: Azul
+        questionModal.classList.add('player1-question');
+        questionModal.classList.remove('player2-question');
+    } else {
+        // Jugador 2: Rojo
+        questionModal.classList.add('player2-question');
+        questionModal.classList.remove('player1-question');
+    }
+    
     // Limpiar opciones anteriores
     questionOptions.innerHTML = '';
     
@@ -864,6 +902,9 @@ function showQuestion(playerIndex) {
 
 // Función para manejar la respuesta de la pregunta
 function handleQuestionAnswer(selectedIndex, correctIndex, playerIndex) {
+    console.log('🎯 Procesando respuesta de pregunta:', { selectedIndex, correctIndex, playerIndex });
+    console.log('🔊 Función playAudio disponible:', typeof playAudio);
+    
     const options = questionOptions.querySelectorAll('.question-option');
     
     // Deshabilitar todas las opciones
@@ -881,6 +922,15 @@ function handleQuestionAnswer(selectedIndex, correctIndex, playerIndex) {
     
     // Mostrar resultado
     if (selectedIndex === correctIndex) {
+        // Reproducir audio de respuesta correcta
+        console.log('✅ Respuesta correcta, reproduciendo audio...');
+        if (typeof playAudio === 'function') {
+            playAudio('correct');
+            console.log('🎵 Audio de respuesta correcta reproducido');
+        } else {
+            console.warn('⚠️ Función playAudio no disponible');
+        }
+        
         questionResult.textContent = '¡Correcto! +10 puntos';
         questionResult.className = 'question-result correct';
         gameState.players[playerIndex].score += 10;
@@ -895,10 +945,19 @@ function handleQuestionAnswer(selectedIndex, correctIndex, playerIndex) {
                 questionResult.classList.add('hidden');
                 questionContinue.classList.add('hidden');
                 showVictoryModal(winnerIndex);
-            }, 2000);
+            }, GAME_CONFIG.UI.ANIMATION_DURATION * 2);
             return;
         }
     } else {
+        // Reproducir audio de respuesta incorrecta
+        console.log('❌ Respuesta incorrecta, reproduciendo audio...');
+        if (typeof playAudio === 'function') {
+            playAudio('incorrect');
+            console.log('🎵 Audio de respuesta incorrecta reproducido');
+        } else {
+            console.warn('⚠️ Función playAudio no disponible');
+        }
+        
         questionResult.textContent = 'Incorrecto. La respuesta correcta está marcada en verde.';
         questionResult.className = 'question-result incorrect';
     }
@@ -911,18 +970,19 @@ function handleQuestionAnswer(selectedIndex, correctIndex, playerIndex) {
 function checkForQuestions() {
     // Una ronda se completa cuando ambos jugadores han jugado
     if (gameState.currentPlayer === 0 && gameState.turnCount > 1) {
-        // Mostrar preguntas cada 2 rondas
-        if (gameState.roundCount % 2 === 0) {
+        // Mostrar preguntas según el intervalo configurado
+        if (gameState.roundCount % GAME_CONFIG.GAME.QUESTIONS_INTERVAL === 0) {
             return true;
         }
     }
     return false;
 }
 
-// Función para verificar si un jugador ha ganado (llegado a 100 puntos)
+// Función para verificar si un jugador ha ganado (llegado a la puntuación ganadora)
 function checkForVictory() {
     for (let i = 0; i < gameState.players.length; i++) {
-        if (gameState.players[i].score >= 100) {
+        if (gameState.players[i].score >= GAME_CONFIG.GAME.WINNING_SCORE) {
+            console.log('🏆 ¡Jugador', i, 'ha ganado con', gameState.players[i].score, 'puntos!');
             return i;
         }
     }
@@ -931,13 +991,54 @@ function checkForVictory() {
 
 // Función para mostrar el modal de victoria
 function showVictoryModal(winnerIndex) {
+    console.log('🎉 Mostrando modal de victoria para jugador:', winnerIndex);
+    
     const winnerName = `Jugador ${winnerIndex + 1}`;
     const winnerScore = gameState.players[winnerIndex].score;
+    
+    // Reproducir audio de felicitaciones
+    console.log('🔊 Reproduciendo audio de felicitaciones...');
+    if (typeof playAudio === 'function') {
+        playAudio('congrats');
+        console.log('🎵 Audio de felicitaciones reproducido');
+    } else {
+        console.warn('⚠️ Función playAudio no disponible');
+    }
+    
+    // Ocultar ventana del turno si está visible
+    const turnModal = document.getElementById('turn-modal');
+    if (turnModal) {
+        turnModal.classList.remove('show', 'hiding');
+    }
     
     victoryTitle.textContent = `¡Felicitaciones, ${winnerName}!`;
     victoryText.textContent = `Has ganado el juego con ${winnerScore} puntos. ¡Excelente trabajo!`;
     
     victoryModal.classList.add('show');
+    console.log('✅ Modal de victoria mostrado correctamente');
+}
+
+// Función para mostrar la ventana emergente del turno
+function showTurnModal() {
+    const turnModal = document.getElementById('turn-modal');
+    const turnPlayerName = document.getElementById('turn-player-name');
+    
+    // Limpiar clases anteriores
+    turnModal.classList.remove('show', 'hiding');
+    
+    // Actualizar el nombre del jugador
+    const playerName = gameState.currentPlayer === 0 ? 'Jugador 1' : 'Jugador 2';
+    turnPlayerName.textContent = playerName;
+    
+    // Mostrar la ventana
+    turnModal.classList.add('show');
+    console.log('🎯 Mostrando ventana del turno para:', playerName);
+    
+    // Ocultar automáticamente después de 1.5 segundos
+    setTimeout(() => {
+        turnModal.classList.add('hiding');
+        console.log('🔄 Ocultando ventana del turno');
+    }, 1500);
 }
 
 // Función para mostrar la selección de categorías
@@ -956,6 +1057,11 @@ function selectCategory(categoryKey) {
     
     // Inicializar el juego con la categoría seleccionada
     initializeGame();
+    
+    // Mostrar ventana del turno inicial después de un breve delay
+    setTimeout(() => {
+        showTurnModal();
+    }, 500);
 }
 
 // Event listeners para las opciones de categoría

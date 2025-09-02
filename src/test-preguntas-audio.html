@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Audio en Preguntas</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .question-simulator {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .question-option {
+            background: #e9ecef;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .question-option:hover {
+            background: #dee2e6;
+            transform: translateY(-2px);
+        }
+        .question-option.correct {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .question-option.incorrect {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        .result {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .result.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .result.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .controls {
+            margin: 20px 0;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .status {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Prueba de Audio en Preguntas Bonus</h1>
+        <p>Este simulador te permite probar cómo funcionan los audios cuando se responden preguntas correctamente o incorrectamente.</p>
+        
+        <div class="status">
+            <h3>Estado de la Configuración:</h3>
+            <div id="config-status">Verificando...</div>
+        </div>
+        
+        <div class="question-simulator">
+            <h3>📝 Simulador de Pregunta Bonus</h3>
+            <p><strong>Pregunta:</strong> ¿Cuál es la capital de Francia?</p>
+            
+            <div class="question-option" onclick="selectOption(0)">
+                A) Londres
+            </div>
+            <div class="question-option" onclick="selectOption(1)">
+                B) París
+            </div>
+            <div class="question-option" onclick="selectOption(2)">
+                C) Berlín
+            </div>
+            <div class="question-option" onclick="selectOption(3)">
+                D) Madrid
+            </div>
+            
+            <div id="question-result" class="result" style="display: none;"></div>
+            
+            <div class="controls">
+                <button onclick="resetQuestion()">🔄 Reiniciar Pregunta</button>
+                <button onclick="testAudioDirectly()">🎵 Probar Audios Directamente</button>
+            </div>
+        </div>
+        
+        <div class="log">
+            <strong>Logs de Consola:</strong>
+            <div id="log-content">
+                Los logs aparecerán aquí...
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="javaScript/config.js"></script>
+    
+    <script>
+        let questionAnswered = false;
+        const correctAnswer = 1; // París (índice 1)
+        
+        // Función para agregar logs a la interfaz
+        function addLog(message) {
+            const logContent = document.getElementById('log-content');
+            const timestamp = new Date().toLocaleTimeString();
+            logContent.innerHTML += `[${timestamp}] ${message}<br>`;
+            logContent.scrollTop = logContent.scrollHeight;
+        }
+        
+        // Interceptar console.log para mostrar en la interfaz
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addLog('LOG: ' + args.join(' '));
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addLog('ERROR: ' + args.join(' '));
+        };
+        
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            addLog('WARN: ' + args.join(' '));
+        };
+        
+        // Función para seleccionar una opción
+        function selectOption(selectedIndex) {
+            if (questionAnswered) return;
+            
+            console.log('🎯 Opción seleccionada:', selectedIndex);
+            
+            const options = document.querySelectorAll('.question-option');
+            const resultDiv = document.getElementById('question-result');
+            
+            // Deshabilitar todas las opciones
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+            });
+            
+            // Marcar la respuesta correcta
+            options[correctAnswer].classList.add('correct');
+            
+            // Marcar la respuesta seleccionada si es incorrecta
+            if (selectedIndex !== correctAnswer) {
+                options[selectedIndex].classList.add('incorrect');
+            }
+            
+            // Mostrar resultado y reproducir audio
+            if (selectedIndex === correctAnswer) {
+                console.log('✅ Respuesta correcta, reproduciendo audio...');
+                playAudio('correct');
+                console.log('🎵 Audio de respuesta correcta reproducido');
+                
+                resultDiv.textContent = '¡Correcto! +10 puntos';
+                resultDiv.className = 'result correct';
+            } else {
+                console.log('❌ Respuesta incorrecta, reproduciendo audio...');
+                playAudio('incorrect');
+                console.log('🎵 Audio de respuesta incorrecta reproducido');
+                
+                resultDiv.textContent = 'Incorrecto. La respuesta correcta está marcada en verde.';
+                resultDiv.className = 'result incorrect';
+            }
+            
+            resultDiv.style.display = 'block';
+            questionAnswered = true;
+        }
+        
+        // Función para reiniciar la pregunta
+        function resetQuestion() {
+            const options = document.querySelectorAll('.question-option');
+            const resultDiv = document.getElementById('question-result');
+            
+            // Limpiar clases y habilitar opciones
+            options.forEach(option => {
+                option.classList.remove('correct', 'incorrect');
+                option.style.pointerEvents = 'auto';
+            });
+            
+            // Ocultar resultado
+            resultDiv.style.display = 'none';
+            
+            questionAnswered = false;
+            console.log('🔄 Pregunta reiniciada');
+        }
+        
+        // Función para probar audios directamente
+        function testAudioDirectly() {
+            console.log('🎵 Probando audios directamente...');
+            
+            console.log('✅ Probando audio correct...');
+            playAudio('correct');
+            
+            setTimeout(() => {
+                console.log('❌ Probando audio incorrect...');
+                playAudio('incorrect');
+            }, 1000);
+        }
+        
+        // Verificar configuración al cargar
+        window.onload = function() {
+            console.log('🚀 Página de prueba de preguntas cargada');
+            
+            const configStatus = document.getElementById('config-status');
+            
+            if (typeof GAME_CONFIG === 'undefined') {
+                configStatus.innerHTML = '<span style="color: #c62828;">❌ GAME_CONFIG no está definido</span>';
+                return;
+            }
+            
+            if (typeof playAudio === 'undefined') {
+                configStatus.innerHTML = '<span style="color: #c62828;">❌ Función playAudio no está disponible</span>';
+                return;
+            }
+            
+            configStatus.innerHTML = `
+                <span style="color: #2e7d32;">✅ Configuración cargada correctamente</span><br>
+                <strong>Audios disponibles:</strong><br>
+                • Respuesta correcta: ${GAME_CONFIG.AUDIO.TRUE_ANSWER}<br>
+                • Respuesta incorrecta: ${GAME_CONFIG.AUDIO.WRONG_ANSWER}<br>
+                • Felicitaciones: ${GAME_CONFIG.AUDIO.CONGRATS}
+            `;
+            
+            console.log('✅ Configuración verificada');
+            console.log('GAME_CONFIG:', GAME_CONFIG);
+            console.log('Función playAudio:', typeof playAudio);
+        };
+    </script>
+</body>
+</html>

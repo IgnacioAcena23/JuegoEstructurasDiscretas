@@ -1,67 +1,140 @@
-# Scrabble
+# 🎮 Juego Scrabble - Estructuras Discretas
 
-Un juego de Scrabble interactivo que incluye preguntas matemáticas para hacer el aprendizaje más divertido.
+Un juego educativo de Scrabble que combina la diversión del juego clásico con preguntas de matemáticas sobre estructuras discretas.
 
-## Características
+## 📁 Estructura del Proyecto
 
-- **Juego de Scrabble completo** con tablero de 15x15
-- **Sistema de puntuación** con multiplicadores de letra y palabra
-- **Preguntas matemáticas** que aparecen cada 2 rondas
-- **Tres categorías de preguntas** para elegir:
-  - 📊 **Teoría de Conjuntos**: Preguntas sobre conjuntos, operaciones y propiedades
-  - 🔢 **Estructuras Algebraicas y Homomorfismos**: Preguntas sobre grupos, semigrupos, monoides y homomorfismos
-  - 🎲 **Permutación y Combinatoria**: Preguntas sobre permutaciones, combinaciones y principios de conteo
+```
+src/
+├── index.html              # Página principal del juego
+├── styles.css              # Estilos CSS del juego
+├── README.md               # Este archivo de documentación
+├── javaScript/             # Carpeta de archivos JavaScript
+│   ├── config.js           # Configuración centralizada del juego
+│   ├── script.js           # Lógica principal y configuración del juego
+│   ├── game.js             # Lógica del juego y eventos
+│   ├── gameLogic.js        # Lógica de jugadas y validaciones
+│   └── questionCategories.js # Categorías y preguntas del juego
+└── recursos/               # Carpeta de recursos del juego
+    ├── INSTRUCCIONES.md    # Instrucciones detalladas del juego
+    ├── Preguntas.txt       # Preguntas generales del juego
+    ├── PreguntasConjuntos.txt # Preguntas sobre teoría de conjuntos
+    ├── PreguntasGrupos.txt # Preguntas sobre estructuras algebraicas
+    ├── TrueAnswer.mp3      # Sonido para respuestas correctas
+    └── WrongAnswer.mp3     # Sonido para respuestas incorrectas
+```
 
-## Cómo jugar
+## 🚀 Características del Juego
 
-1. **Abrir el juego**: Ejecuta `scrabble.html` en tu navegador
-2. **Seleccionar categoría**: Al inicio del juego, elige la categoría de preguntas que prefieras
-3. **Jugar Scrabble**: Coloca palabras en el tablero para ganar puntos
-4. **Responder preguntas**: Cada 2 rondas aparecerán preguntas de la categoría seleccionada
-5. **Ganar**: El primer jugador en alcanzar 100 puntos gana
+### 🎯 Objetivo
+- Formar palabras en el tablero de Scrabble
+- Obtener **100 puntos** para ganar
+- Responder preguntas de matemáticas para ganar puntos extra
 
-## Controles
+### 🎮 Funcionalidades
+- **Tablero de 15x15** con casillas especiales
+- **Sistema de puntuación** con multiplicadores
+- **Preguntas educativas** cada 2 rondas
+- **Interfaz responsive** para dispositivos móviles
+- **Sistema táctil** para arrastrar fichas en móviles
 
-- **Click en fichas**: Selecciona fichas de tu rack
-- **Click en el tablero**: Coloca las fichas seleccionadas
-- **Jugar palabra**: Confirma la palabra colocada
-- **Pasar turno**: Salta tu turno
-- **Cambiar fichas**: Intercambia fichas de tu rack
-- **Nuevo juego**: Reinicia el juego y selecciona una nueva categoría
+### 📱 Compatibilidad Móvil
+- **Arrastre táctil** de fichas
+- **Interfaz adaptativa** para pantallas pequeñas
+- **Controles optimizados** para dispositivos táctiles
 
-## Archivos del proyecto
+## 🛠️ Tecnologías Utilizadas
 
-- `scrabble.html` - Archivo principal del juego
-- `styles.css` - Estilos y diseño visual
-- `script.js` - Configuración y estado del juego
-- `game.js` - Lógica principal del juego y preguntas
-- `gameLogic.js` - Lógica de jugabilidad y controles
-- `questionCategories.js` - Categorías de preguntas matemáticas
+- **HTML5** - Estructura del juego
+- **CSS3** - Estilos y animaciones
+- **JavaScript ES6+** - Lógica del juego
+- **Eventos táctiles** - Soporte móvil nativo
 
-## Categorías de preguntas
+## 📚 Categorías de Preguntas
 
-### Teoría de Conjuntos
-Preguntas sobre:
-- Notación de conjuntos
-- Operaciones de conjuntos (unión, intersección)
-- Propiedades de operaciones (conmutatividad, asociatividad)
-- Elementos neutros y simétricos
+### 1. **Teoría de Conjuntos**
+- Operaciones con conjuntos
+- Propiedades de conjuntos
 - Leyes de composición interna
 
-### Estructuras Algebraicas y Homomorfismos
-Preguntas sobre:
-- Semigrupos, monoides y grupos
-- Grupos abelianos
-- Homomorfismos, monomorfismos, epimorfismos e isomorfismos
-- Núcleo e imagen de homomorfismos
-- Endomorfismos
+### 2. **Estructuras Algebraicas**
+- Grupos, semigrupos y monoides
+- Homomorfismos
+- Propiedades algebraicas
 
-### Permutación y Combinatoria
-Preguntas sobre:
+### 3. **Permutación y Combinatoria**
+- Principios de conteo
 - Permutaciones y combinaciones
-- Principios de suma y multiplicación
-- Permutaciones circulares
-- Selección con y sin reemplazo
-- Aplicaciones de conteo
+- Problemas de probabilidad
 
-¡Disfruta aprendiendo matemáticas mientras juegas Scrabble! 
+## 🎵 Recursos de Audio
+
+- **TrueAnswer.mp3** - Sonido para respuestas correctas
+- **WrongAnswer.mp3** - Sonido para respuestas incorrectas
+
+## 🔧 Configuración
+
+El archivo `config.js` centraliza toda la configuración del juego:
+
+```javascript
+const GAME_CONFIG = {
+    GAME: {
+        BOARD_SIZE: 15,
+        RACK_SIZE: 7,
+        WINNING_SCORE: 100,
+        QUESTIONS_INTERVAL: 2
+    },
+    UI: {
+        ANIMATION_DURATION: 300,
+        MESSAGE_DISPLAY_TIME: 3000,
+        MOBILE_BREAKPOINT: 768
+    }
+};
+```
+
+## 🎯 Cómo Jugar
+
+1. **Selecciona una categoría** de preguntas
+2. **Coloca fichas** en el tablero formando palabras
+3. **Responde preguntas** cada 2 rondas para ganar puntos
+4. **Alcanza 100 puntos** para ganar
+
+## 📱 Controles Móviles
+
+- **Toca una ficha** para seleccionarla
+- **Toca una celda** para colocarla
+- **Toca el rack** para devolverla
+
+## 🔄 Funcionalidades Avanzadas
+
+- **Cambio de fichas** - Intercambia fichas no deseadas
+- **Movimiento de fichas** - Ajusta posiciones antes de confirmar
+- **Devolución al rack** - Regresa fichas no confirmadas
+- **Sistema de confirmación** - Fichas confirmadas no se pueden mover
+
+## 📖 Instrucciones Detalladas
+
+Consulta el archivo `recursos/INSTRUCCIONES.md` para instrucciones completas del juego.
+
+## 🎨 Personalización
+
+- **Colores del tema** en `styles.css`
+- **Configuración del juego** en `config.js`
+- **Preguntas** en los archivos de texto de la carpeta `recursos`
+
+## 🚀 Instalación y Uso
+
+1. Abre `index.html` en tu navegador
+2. Selecciona una categoría de preguntas
+3. ¡Comienza a jugar!
+
+## 📝 Notas de Desarrollo
+
+- **Modularización** - Código organizado en archivos separados
+- **Configuración centralizada** - Todas las constantes en un lugar
+- **Recursos organizados** - Archivos de texto y audio en carpeta separada
+- **Compatibilidad móvil** - Sistema táctil implementado
+
+---
+
+**Desarrollado para el aprendizaje de Estructuras Discretas** 🎓 

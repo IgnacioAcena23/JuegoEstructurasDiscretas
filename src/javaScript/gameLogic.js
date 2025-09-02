@@ -193,7 +193,7 @@ function nextTurn() {
     // Ocultar mensaje después de un tiempo
     setTimeout(() => {
         messageElement.classList.add('hidden');
-    }, 3000);
+    }, GAME_CONFIG.UI.MESSAGE_DISPLAY_TIME);
 }
 
 // Pasar turno
@@ -356,6 +356,12 @@ function resetGame() {
         currentQuestionPlayer: null,
         selectedCategory: null
     };
+    
+    // Ocultar ventana del turno si está visible
+    const turnModal = document.getElementById('turn-modal');
+    if (turnModal) {
+        turnModal.classList.remove('show', 'hiding');
+    }
     
     // Mostrar selección de categorías para el nuevo juego
     showCategorySelection();
