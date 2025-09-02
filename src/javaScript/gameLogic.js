@@ -72,13 +72,26 @@ playButton.addEventListener('click', () => {
             });
         }
         
+        // Reproducir audio de palabra correcta
+        console.log('🔊 Reproduciendo audio de palabra correcta...');
+        if (typeof playAudio === 'function') {
+            playAudio('correct_word');
+            console.log('🎵 Audio de palabra correcta reproducido');
+        } else {
+            console.warn('⚠️ Función playAudio no disponible');
+        }
+        
         showMessage(`¡Palabra válida! +${score} puntos`, 'success');
         
         // Reponer fichas
         replenishTiles();
         
-        // Pasar al siguiente jugador
-        nextTurn();
+        // Delay de 2 segundos antes de pasar al siguiente jugador
+        console.log('⏱️ Esperando 2 segundos antes de mostrar el turno del siguiente jugador...');
+        setTimeout(() => {
+            console.log('🔄 Pasando al siguiente jugador después del delay...');
+            nextTurn();
+        }, 2000);
     } else {
         showMessage('Colocación inválida - la palabra debe conectar con fichas existentes', 'error');
     }

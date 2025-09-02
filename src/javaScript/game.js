@@ -798,6 +798,8 @@ function updateGameInfo() {
 }
 
 function setActivePlayer() {
+    console.log('🔄 setActivePlayer() llamado - gameStarted:', gameState.gameStarted);
+    
     // Remover todas las clases de color y activo
     player1Element.classList.remove('active', 'player1-active');
     player2Element.classList.remove('active', 'player2-active');
@@ -806,14 +808,25 @@ function setActivePlayer() {
         // Jugador 1: Azul
         player1Element.classList.add('active', 'player1-active');
         player2Element.classList.remove('active');
+        console.log('👤 Jugador 1 activado (azul)');
     } else {
         // Jugador 2: Rojo
         player2Element.classList.add('active', 'player2-active');
         player1Element.classList.remove('active');
+        console.log('👤 Jugador 2 activado (rojo)');
     }
     
     // Mostrar ventana emergente del turno
-    showTurnModal();
+    // Si es el inicio del juego (gameStarted es false), agregar un pequeño delay
+    if (!gameState.gameStarted) {
+        console.log('🚀 Inicio del juego detectado, delay de 300ms antes de mostrar turno');
+        setTimeout(() => {
+            showTurnModal();
+        }, 300);
+    } else {
+        console.log('🔄 Cambio de turno normal, mostrando turno inmediatamente');
+        showTurnModal();
+    }
 }
 
 function showMessage(text, type) {
@@ -1022,13 +1035,35 @@ function showVictoryModal(winnerIndex) {
 function showTurnModal() {
     const turnModal = document.getElementById('turn-modal');
     const turnPlayerName = document.getElementById('turn-player-name');
+    const turnContainer = turnModal.querySelector('.turn-container');
     
     // Limpiar clases anteriores
     turnModal.classList.remove('show', 'hiding');
+    turnContainer.classList.remove('player1-active', 'player2-active');
     
     // Actualizar el nombre del jugador
     const playerName = gameState.currentPlayer === 0 ? 'Jugador 1' : 'Jugador 2';
     turnPlayerName.textContent = playerName;
+    
+    // Aplicar colores según el jugador activo
+    if (gameState.currentPlayer === 0) {
+        // Jugador 1: Azul
+        turnContainer.classList.add('player1-active');
+        console.log('🎨 Aplicando tema azul para Jugador 1');
+    } else {
+        // Jugador 2: Rojo
+        turnContainer.classList.add('player2-active');
+        console.log('🎨 Aplicando tema rojo para Jugador 2');
+    }
+    
+    // Reproducir audio del turno
+    console.log('🔊 Reproduciendo audio del turno para:', playerName);
+    if (typeof playAudio === 'function') {
+        playAudio('player_turn');
+        console.log('🎵 Audio del turno reproducido para:', playerName);
+    } else {
+        console.warn('⚠️ Función playAudio no disponible');
+    }
     
     // Mostrar la ventana
     turnModal.classList.add('show');
@@ -1037,7 +1072,7 @@ function showTurnModal() {
     // Ocultar automáticamente después de 1.5 segundos
     setTimeout(() => {
         turnModal.classList.add('hiding');
-        console.log('🔄 Ocultando ventana del turno');
+        console.log('🔄 Ocultando ventana del turno para:', playerName);
     }, 1500);
 }
 
@@ -1049,6 +1084,7 @@ function showCategorySelection() {
 
 // Función para manejar la selección de categoría
 function selectCategory(categoryKey) {
+    console.log('🎯 Categoría seleccionada:', categoryKey);
     gameState.selectedCategory = categoryKey;
     
     // Ocultar modal de categorías
@@ -1056,12 +1092,9 @@ function selectCategory(categoryKey) {
     categoryModal.classList.remove('show');
     
     // Inicializar el juego con la categoría seleccionada
+    // setActivePlayer() ya se llama en initializeGame() y mostrará la ventana del turno
+    console.log('🚀 Inicializando juego...');
     initializeGame();
-    
-    // Mostrar ventana del turno inicial después de un breve delay
-    setTimeout(() => {
-        showTurnModal();
-    }, 500);
 }
 
 // Event listeners para las opciones de categoría

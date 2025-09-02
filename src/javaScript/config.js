@@ -5,12 +5,17 @@ const GAME_CONFIG = {
     // Rutas de recursos
     RESOURCES_PATH: 'recursos/',
     
+    // Estado del audio (silenciado o no)
+    AUDIO_MUTED: false,
+    
     // Archivos de audio
     AUDIO: {
         TRUE_ANSWER: 'recursos/TrueAnswer.mp3',
         WRONG_ANSWER: 'recursos/WrongAnswer.mp3',
         CONGRATS: 'recursos/Congrats.mp3',
-        PUT_PIECE: 'recursos/PutPiece.mp3'
+        PUT_PIECE: 'recursos/PutPiece.mp3',
+        PLAYER_TURN: 'recursos/PlayerTurn.mp3',
+        CORRECT_WORD: 'recursos/CorrectWord.mp3'
     },
     
     // Archivos de texto
@@ -55,6 +60,12 @@ function getResourcePath(resourceType, resourceName) {
 
 // Función para reproducir audio
 function playAudio(audioType) {
+    // Verificar si el audio está silenciado
+    if (GAME_CONFIG.AUDIO_MUTED) {
+        console.log('🔇 Audio silenciado, no se reproduce:', audioType);
+        return;
+    }
+    
     try {
         console.log('🎵 Reproduciendo audio:', audioType);
         const audio = new Audio();
@@ -73,8 +84,14 @@ function playAudio(audioType) {
             case 'put_piece':
                 audioSrc = GAME_CONFIG.AUDIO.PUT_PIECE;
                 break;
+            case 'player_turn':
+                audioSrc = GAME_CONFIG.AUDIO.PLAYER_TURN;
+                break;
+            case 'correct_word':
+                audioSrc = GAME_CONFIG.AUDIO.CORRECT_WORD;
+                break;
             default:
-                console.warn('Tipo de audio no reconocido:', audioType);
+                console.log('Tipo de audio no reconocido:', audioType);
                 return;
         }
         
@@ -144,6 +161,53 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = { GAME_CONFIG, getResourcePath, playAudio, loadTextFile };
 }
 
+// Función para alternar el estado de silencio
+function toggleMute() {
+    GAME_CONFIG.AUDIO_MUTED = !GAME_CONFIG.AUDIO_MUTED;
+    
+    const muteBtn = document.getElementById('mute-btn');
+    const muteIcon = muteBtn.querySelector('.mute-icon');
+    
+    if (GAME_CONFIG.AUDIO_MUTED) {
+        muteBtn.classList.add('muted');
+        muteIcon.textContent = '🔇';
+        console.log('🔇 Audio silenciado');
+    } else {
+        muteBtn.classList.remove('muted');
+        muteIcon.textContent = '🔊';
+        console.log('🔊 Audio activado');
+    }
+    
+    // Guardar preferencia en localStorage
+    localStorage.setItem('scrabble_audio_muted', GAME_CONFIG.AUDIO_MUTED);
+}
+
+// Función para establecer el estado de silencio
+function setMuteState(muted) {
+    GAME_CONFIG.AUDIO_MUTED = muted;
+    
+    const muteBtn = document.getElementById('mute-btn');
+    const muteIcon = muteBtn.querySelector('.mute-icon');
+    
+    if (muted) {
+        muteBtn.classList.add('muted');
+        muteIcon.textContent = '🔇';
+    } else {
+        muteBtn.classList.remove('muted');
+        muteIcon.textContent = '🔊';
+    }
+}
+
+// Función para cargar preferencia de silencio desde localStorage
+function loadMutePreference() {
+    const savedMuteState = localStorage.getItem('scrabble_audio_muted');
+    if (savedMuteState !== null) {
+        const muted = savedMuteState === 'true';
+        setMuteState(muted);
+        console.log('🔊 Preferencia de audio cargada:', muted ? 'Silenciado' : 'Activado');
+    }
+}
+
 // Verificación de configuración cuando se carga la página (SIN REPRODUCIR AUDIOS)
 window.addEventListener('load', function() {
     console.log('=== CONFIGURACIÓN DE AUDIO VERIFICADA ===');
@@ -153,4 +217,7 @@ window.addEventListener('load', function() {
     console.log('Ruta TRUE_ANSWER:', GAME_CONFIG.AUDIO.TRUE_ANSWER);
     console.log('Ruta WRONG_ANSWER:', GAME_CONFIG.AUDIO.WRONG_ANSWER);
     console.log('✅ Los audios solo se reproducirán cuando los actives manualmente');
+    
+    // Cargar preferencia de silencio
+    loadMutePreference();
 });

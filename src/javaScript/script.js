@@ -209,12 +209,13 @@ let gameState = {
     selectedCategory: null // Categoría de preguntas seleccionada
 };
 
-// Funcionalidad para el modal de instrucciones
+// Funcionalidad para el modal de instrucciones y botón de silencio
 document.addEventListener('DOMContentLoaded', function() {
     const instructionsBtn = document.getElementById('instructions-btn');
     const instructionsModal = document.getElementById('instructions-modal');
     const closeInstructionsBtn = document.getElementById('close-instructions-btn');
     const mobileHelp = document.getElementById('mobile-help');
+    const muteBtn = document.getElementById('mute-btn');
 
     // Detectar si es un dispositivo móvil
     function isMobileDevice() {
@@ -258,6 +259,21 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.style.overflow = 'auto';
         }
     });
+    
+    // Event listener para el botón de silencio
+    if (muteBtn) {
+        muteBtn.addEventListener('click', function() {
+            if (typeof toggleMute === 'function') {
+                toggleMute();
+            } else {
+                console.warn('⚠️ Función toggleMute no disponible');
+            }
+        });
+        
+        console.log('🔇 Event listener del botón de silencio configurado');
+    } else {
+        console.warn('⚠️ Botón de silencio no encontrado');
+    }
     
     // Debug: verificar que los eventos táctiles estén disponibles
     console.log('Touch events disponibles:', 'ontouchstart' in window);

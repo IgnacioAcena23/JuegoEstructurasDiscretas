@@ -41,10 +41,17 @@ body {
     position: relative;
 }
 
-.instructions-btn {
+.header-buttons {
     position: fixed;
     top: 20px;
     left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1001;
+}
+
+.instructions-btn, .mute-btn {
     background: white;
     color: #3498db;
     border: 2px solid #3498db;
@@ -58,7 +65,21 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1001;
+}
+
+.instructions-btn:hover, .mute-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+}
+
+.mute-btn.muted {
+    background: #e74c3c;
+    color: white;
+    border-color: #e74c3c;
+}
+
+.mute-btn.muted:hover {
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
 }
 
 .instructions-btn:hover {
@@ -66,7 +87,7 @@ body {
     box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
 }
 
-.instructions-icon {
+.instructions-icon, .mute-icon {
     font-size: 20px;
 }
 
@@ -109,13 +130,28 @@ body {
 
 /* Colores del modal según el jugador activo */
 .player.player1-active ~ .turn-modal .turn-container {
+    background: rgba(52, 152, 219, 0.95);
     border-color: #3498db;
     box-shadow: 0 20px 60px rgba(52, 152, 219, 0.4);
 }
 
 .player.player2-active ~ .turn-modal .turn-container {
+    background: rgba(231, 76, 60, 0.95);
     border-color: #e74c3c;
     box-shadow: 0 20px 60px rgba(231, 76, 60, 0.4);
+}
+
+/* Colores directos del contenedor del turno según el jugador */
+.turn-container.player1-active {
+    background: rgba(52, 152, 219, 0.95) !important;
+    border-color: #3498db !important;
+    box-shadow: 0 20px 60px rgba(52, 152, 219, 0.4) !important;
+}
+
+.turn-container.player2-active {
+    background: rgba(231, 76, 60, 0.95) !important;
+    border-color: #e74c3c !important;
+    box-shadow: 0 20px 60px rgba(231, 76, 60, 0.4) !important;
 }
 
 
@@ -125,6 +161,7 @@ body {
     color: #666;
     margin-bottom: 15px;
     font-weight: 500;
+    transition: color 0.3s ease;
 }
 
 .turn-player {
@@ -137,13 +174,37 @@ body {
 
 /* Colores del nombre del jugador según el jugador activo */
 .player.player1-active ~ .turn-modal .turn-player {
-    color: #3498db;
-    text-shadow: 1px 1px 2px rgba(52, 152, 219, 0.2);
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .player.player2-active ~ .turn-modal .turn-player {
-    color: #e74c3c;
-    text-shadow: 1px 1px 2px rgba(231, 76, 60, 0.2);
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Colores del texto "Turno del" según el jugador activo */
+.player.player1-active ~ .turn-modal .turn-text {
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.player.player2-active ~ .turn-modal .turn-text {
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Colores directos del texto cuando el contenedor tiene color de fondo */
+.turn-container.player1-active .turn-text,
+.turn-container.player1-active .turn-player {
+    color: white !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+.turn-container.player2-active .turn-text,
+.turn-container.player2-active .turn-player {
+    color: white !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
 
