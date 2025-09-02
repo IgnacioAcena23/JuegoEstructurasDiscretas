@@ -31,6 +31,14 @@ const victoryTitle = document.getElementById('victory-title');
 const victoryText = document.getElementById('victory-text');
 const victoryRestartBtn = document.getElementById('victory-restart-btn');
 
+// Elementos del timer
+const timerSeconds = document.getElementById('timer-seconds');
+const timerProgress = document.getElementById('timer-progress');
+
+// Variables del timer
+let questionTimer = null;
+let timeRemaining = 15;
+
 // Inicializar el juego
 showCategorySelection();
 
@@ -48,6 +56,9 @@ legendToggle.addEventListener('click', () => {
 
 // Event listener para continuar después de la pregunta
 questionContinue.addEventListener('click', () => {
+    // Detener el timer si aún está activo
+    stopQuestionTimer();
+    
     questionModal.classList.remove('show');
     questionResult.classList.add('hidden');
     questionContinue.classList.add('hidden');
@@ -878,6 +889,9 @@ function showQuestion(playerIndex) {
     const question = getRandomQuestion();
     const playerName = `Jugador ${playerIndex + 1}`;
     
+    // Guardar la pregunta actual para el timer
+    gameState.currentQuestion = question;
+    
     questionTitle.textContent = `Pregunta para ${playerName}`;
     questionText.textContent = question.question;
     
@@ -911,12 +925,21 @@ function showQuestion(playerIndex) {
     questionModal.classList.add('show');
     gameState.questionMode = true;
     gameState.currentQuestionPlayer = playerIndex;
+    
+    // Iniciar timer de la pregunta
+    startQuestionTimer();
 }
 
 // Función para manejar la respuesta de la pregunta
 function handleQuestionAnswer(selectedIndex, correctIndex, playerIndex) {
     console.log('🎯 Procesando respuesta de pregunta:', { selectedIndex, correctIndex, playerIndex });
     console.log('🔊 Función playAudio disponible:', typeof playAudio);
+    
+    // Detener el timer ya que se respondió la pregunta
+    stopQuestionTimer();
+    
+    // El audio del timer se detiene automáticamente al detener el timer
+    console.log('⏰ Timer y audio del timer detenidos al responder');
     
     const options = questionOptions.querySelectorAll('.question-option');
     
@@ -1108,3 +1131,98 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+// Funciones del timer para las preguntas
+function startQuestionTimer() {
+    console.log('⏰ Iniciando timer de pregunta...');
+    
+    // Reiniciar variables del timer
+    timeRemaining = 15;
+    timerSeconds.textContent = timeRemaining;
+    timerProgress.style.width = '100%';
+    
+    // Limpiar timer anterior si existe
+    if (questionTimer) {
+        clearInterval(questionTimer);
+    }
+    
+    // Reproducir audio del timer SOLO al iniciar
+    if (typeof playAudio === 'function') {
+        playAudio('timer_ticks');
+        console.log('⏰ Audio del timer iniciado (solo al comienzo)');
+    }
+    
+    // Iniciar countdown
+    questionTimer = setInterval(() => {
+        timeRemaining--;
+        timerSeconds.textContent = timeRemaining;
+        
+        // Actualizar barra de progreso
+        const progressPercentage = (timeRemaining / 15) * 100;
+        timerProgress.style.width = progressPercentage + '%';
+        
+        console.log('⏰ Tiempo restante:', timeRemaining, 'segundos');
+        
+        // NO reproducir audio del timer cada segundo, solo al inicio
+        
+        // Cuando se agote el tiempo
+        if (timeRemaining <= 0) {
+            console.log('⏰ ¡Tiempo agotado!');
+            clearInterval(questionTimer);
+            questionTimer = null;
+            
+            // Reproducir audio de respuesta incorrecta
+            if (typeof playAudio === 'function') {
+                playAudio('incorrect');
+                console.log('🎵 Audio de tiempo agotado reproducido');
+            }
+            
+            // Mostrar respuesta correcta y mensaje de tiempo agotado
+            handleTimeOut();
+        }
+    }, 1000);
+}
+
+function stopQuestionTimer() {
+    console.log('⏰ Deteniendo timer de pregunta...');
+    if (questionTimer) {
+        clearInterval(questionTimer);
+        questionTimer = null;
+    }
+    
+    // Detener cualquier audio del timer que esté reproduciéndose
+    if (typeof stopTimerAudio === 'function') {
+        stopTimerAudio();
+        console.log('🔇 Audio del timer detenido');
+    }
+}
+
+function handleTimeOut() {
+    console.log('⏰ Manejando tiempo agotado...');
+    
+    // Deshabilitar todas las opciones
+    const options = questionOptions.querySelectorAll('.question-option');
+    options.forEach(option => {
+        option.style.pointerEvents = 'none';
+    });
+    
+    // Obtener la pregunta actual para mostrar la respuesta correcta
+    const currentQuestion = getCurrentQuestion();
+    if (currentQuestion) {
+        // Marcar la respuesta correcta
+        options[currentQuestion.correct].classList.add('correct');
+        
+        // Mostrar mensaje de tiempo agotado
+        questionResult.textContent = '¡Tiempo agotado! No se sumaron puntos. La respuesta correcta está marcada en verde.';
+        questionResult.className = 'question-result incorrect';
+        questionResult.classList.remove('hidden');
+        
+        // Mostrar botón continuar
+        questionContinue.classList.remove('hidden');
+    }
+}
+
+function getCurrentQuestion() {
+    // Retornar la pregunta actual guardada en el estado del juego
+    return gameState.currentQuestion || null;
+}

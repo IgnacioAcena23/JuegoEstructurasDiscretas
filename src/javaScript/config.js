@@ -15,7 +15,8 @@ const GAME_CONFIG = {
         CONGRATS: 'recursos/Congrats.mp3',
         PUT_PIECE: 'recursos/PutPiece.mp3',
         PLAYER_TURN: 'recursos/PlayerTurn.mp3',
-        CORRECT_WORD: 'recursos/CorrectWord.mp3'
+        CORRECT_WORD: 'recursos/CorrectWord.mp3',
+        TIMER_TICKS: 'recursos/TimerTicks.mp3'
     },
     
     // Archivos de texto
@@ -90,6 +91,9 @@ function playAudio(audioType) {
             case 'correct_word':
                 audioSrc = GAME_CONFIG.AUDIO.CORRECT_WORD;
                 break;
+            case 'timer_ticks':
+                audioSrc = GAME_CONFIG.AUDIO.TIMER_TICKS;
+                break;
             default:
                 console.log('Tipo de audio no reconocido:', audioType);
                 return;
@@ -117,8 +121,28 @@ function playAudio(audioType) {
         }).catch(error => {
             console.error('❌ Error reproduciendo audio:', error);
         });
+        
+        // Si es el audio del timer, guardarlo para poder detenerlo después
+        if (audioType === 'timer_ticks') {
+            GAME_CONFIG.currentTimerAudio = audio;
+            console.log('⏰ Audio del timer guardado para control de detención');
+        }
     } catch (error) {
         console.error('💥 Error creando elemento de audio:', error);
+    }
+}
+
+// Función para detener el audio del timer
+function stopTimerAudio() {
+    if (GAME_CONFIG.currentTimerAudio) {
+        try {
+            GAME_CONFIG.currentTimerAudio.pause();
+            GAME_CONFIG.currentTimerAudio.currentTime = 0;
+            console.log('🔇 Audio del timer detenido y reiniciado');
+        } catch (error) {
+            console.error('❌ Error deteniendo audio del timer:', error);
+        }
+        GAME_CONFIG.currentTimerAudio = null;
     }
 }
 
