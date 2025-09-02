@@ -1841,8 +1841,8 @@ button:disabled {
 }
 
 .close-btn {
-    background: rgba(255, 255, 255, 0.2);
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: #e74c3c;
+    border: 2px solid #e74c3c;
     color: white;
     border-radius: 50%;
     width: 40px;
@@ -1856,8 +1856,10 @@ button:disabled {
 }
 
 .close-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: #c0392b;
+    border-color: #c0392b;
     transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
 }
 
 /* Botón de cerrar instrucciones según el jugador */
